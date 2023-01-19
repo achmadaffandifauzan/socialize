@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+    <% for (let post of posts) {%>
+        <div class="cardIndex card my-5">
+            <div class="card-header">
+                <a href="">
+                    Account Name
+                </a>
+            </div>
+            <div class="card-body">
+                <a href="posts/<%=post._id%>">
+                    <%=post.title%>
+                </a>
+                <p>
+                    <%= post.description %>
+                </p>
+                <p>
+                    <%= post.hashtag %>
+                </p>
+            </div>
+            <% if (post.image){ %>
+                <img src="<%=post.image%>" class="card-img-bottom" alt="...">
+                <% } %>
+                    <div class="card-footer text-muted">
+                        2 days ago
+                    </div>
+        </div>
+        <% } %>

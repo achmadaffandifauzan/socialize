@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+    <div class="col-6 offset-3">
+        <h3 class="text-center mb-4">Edit Post</h3>
+        <form action="/posts/<%= posts._id %>?_method=PUT " method="POST" novalidate class="needs-validation">
+            <div class="form-group mb-3">
+                <label for="titleEdit">Title</label>
+                <input type="text" class="form-control" id="titleEdit" name="post[title]" value="<%= posts.title %> ">
+            </div>
+            <div class="form-group mb-3">
+                <label for="descriptionEdit">Description</label>
+                <textarea class="form-control" id="descriptionEdit" rows="3" name="post[description]"
+                    required><%= posts.description %></textarea>
+                <div class="invalid-feedback">
+                    Add something to post!
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="hashtagEdit">Hashtag</label>
+                <input type="text" class="form-control" id="hashtagEdit" name="post[hashtag]"
+                    value="<%= posts.hashtag %> ">
+            </div>
+            <button class="btn btnNewCustom btn-sm btn-success mb-3">Update</button>
+            <a href="/posts/<%= posts._id %>"><button type="button"
+                    class="btn btnNewCustom btn-sm btn-danger mb-3 ms-3">Cancel</button></a>
+        </form>
+    </div>

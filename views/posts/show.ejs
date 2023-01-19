@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% layout('layouts/boilerplate') %>
+    <div class="cardShow card mt-0">
+        <div id="cardShowHeader" class="card-header">
+            <a class="ownerName" href="">
+                Account Name
+            </a>
+            <div id="buttonShow">
+                <a href="/posts/<%= posts._id %>/edit"><button type="button"
+                        class="btn btn-sm btn-info">Edit</button></a>
+                <form action="/posts/<%= posts._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <h4>
+                <%= posts.title %>
+            </h4>
+            <p>
+                <%= posts.description %>
+            </p>
+            <p>
+                <%= posts.hashtag %>
+            </p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1557218825-334e575bcc38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=10"
+            class="card-img-bottom" alt="...">
+    </div>
+    <div class="cardShow my-3">
+        <form action="/posts/<%= posts._id %>/comments" method="POST" class="needs-validation" novalidate>
+            <label class="form-label" for="commentAdd"> Add Comment</label>
+            <textarea class="form-control" name="comment[text]" id="commentAdd" cols="50" rows="2" required></textarea>
+            <div class="invalid-feedback">
+                Add something to comment!
+            </div>
+            <button class="btn btn-sm btn-success mt-3">Comment</button>
+        </form>
+    </div>
+    <h4 class="cardShow my-4">Comments</h4>
+    <% for (let comment of posts.comments) {%>
+        <div id="commentsShow">
+            <div class="cardShow card mb-2">
+                <div class="card-header">
+                    <a class="ownerName" href="">
+                        Account Name
+                    </a>
+                    <form action="/posts/<%= posts._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <%= comment.text %>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+            </div>
