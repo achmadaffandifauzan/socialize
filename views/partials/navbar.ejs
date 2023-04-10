@@ -1,38 +1,81 @@
-<nav class="navbar sticky-top navbar-expand-lg bg-dark py-1" data-bs-theme="dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Socialize</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<nav id="nav" class="navbar sticky-top navbar-expand-lg py-1" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-0 h1" href="#">SEKAWAN</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active m-auto" aria-current="page" href="/posts">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link m-auto" href="/posts/new">New Post</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle m-auto" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Account
+          </a>
+          <ul id="nav-dropdown p-0" class="dropdown-menu">
+            <% if(!currentUser) { %>
+              <li><a class="dropdown-item" href="">Guest</a></li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li><a class="dropdown-item" href="/login">Login</a></li>
+              <li><a class="dropdown-item" href="/register">Register</a></li>
+              <% } else { %>
+                <li>
+                  <a class="dropdown-item" href="/<%= currentUser._id %>">
+                    <%=currentUser.username %>
+                  </a>
+                </li>
+
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                <% } %>
+          </ul>
+        </li>
+
+        <!-- <% if(!currentUser) { %>
+          <li class="nav-item me-0">
+            <a class="nav-link me-0" href="/login">Login</a>
+          </li>
+          <li class="nav-item me-0">
+            <a class="nav-link me-0" href="/register">Register</a>
+          </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="dropdown-item" href="/<%= currentUser._id %>">
+                <%=currentUser.username %>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </li>
+            <% } %>
+      </ul> -->
+        <!-- <form class="d-flex" role="search">
+        <input
+          id="navSearchInput"
+          class="form-control form-control-sm me-2"
+          type="search"
+          aria-label="Search"
+        />
+        <button
+          id="navSearchBtn"
+          class="btn btn-outline-secondary btn-sm"
+          type="submit"
+        >
+          Search
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/posts">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/posts/new">New Post</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Account
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Login</a></li>
-                        <li><a class="dropdown-item" href="#">Register</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control form-control-sm me-2 bg-dark " type="search" placeholder="Search"
-                    aria-label="Search">
-                <button class="btn btn-outline-secondary  btn-sm" type="submit">Search</button>
-            </form>
-        </div>
+      </form> -->
+
     </div>
+  </div>
 </nav>

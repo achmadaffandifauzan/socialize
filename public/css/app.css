@@ -1,0 +1,285 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "lato";
+}
+
+h3 {
+  border-bottom: 2px solid #ff5c00;
+  width: max-content;
+  margin: auto;
+}
+
+textarea {
+  max-height: 300px;
+}
+
+#nav {
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+nav .container-fluid {
+  font-family: "lato";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+nav .container-fluid a {
+  color: black;
+  align-items: center;
+  font-size: 16px;
+  border: 2px solid white;
+  height: max-content;
+  width: max-content;
+  padding: 0.4em;
+}
+
+nav .container-fluid a:hover {
+  color: #ff5c00 !important;
+  align-items: center;
+  font-size: 16px;
+  border-bottom: 2px solid #ff5c00;
+}
+
+#navSearchBtn,
+#navSearchInput {
+  font-family: "lato";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid #ff5c00;
+  color: black;
+  transition: 0.3s;
+}
+
+#navSearchBtn:hover {
+  background-color: #ff5c00;
+  color: white;
+}
+
+#nav-dropdown {
+  border-radius: 0;
+  color: white;
+  border: 0;
+  border-bottom: 2px solid #ff5c00;
+  transition: 0.2s;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+#nav-dropdown a {
+  transition: 0.2s;
+}
+
+#nav-dropdown a:hover {
+  background-color: white;
+  color: #ff5c00;
+  border: 2px solid white;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  border: 0 !important;
+  font-size: larger;
+}
+
+.footer {
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.card {
+  border-radius: 0 !important;
+  border: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.cardIndex {
+  max-width: 50%;
+  margin: auto;
+}
+
+.card-header {
+  border-radius: 0 !important;
+}
+
+.card-footer {
+  border: 0;
+  border-radius: 0 !important;
+  background-color: white;
+}
+
+.cardShow {
+  max-width: 60%;
+  margin: auto;
+}
+
+button {
+  border-radius: 0 !important;
+}
+
+.form-control {
+  border-radius: 0 !important;
+  border: 0;
+  background-color: white;
+  border-bottom: 2px solid #ff5e00;
+}
+
+.image-post-index {
+  max-height: 300px;
+  width: auto;
+  object-fit: cover;
+}
+
+.image-post-show {
+  max-height: 450px;
+  width: auto;
+  object-fit: cover;
+}
+
+.image-post-userShow {
+  max-height: 300px;
+  object-fit: cover;
+}
+
+#cardShowHeader {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: max-content;
+}
+
+#buttonShow {
+  display: flex;
+  align-self: center;
+  justify-self: end;
+}
+
+#buttonShow form {
+  display: inline-block;
+  margin-left: 0.5em;
+}
+
+#commentsShow form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#commentsShow .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profileBgImage {
+  height: 15em;
+}
+
+.profileImageWrapper {
+  height: 40px;
+}
+
+.profileImage {
+  object-fit: cover;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  border: 4px solid whitesmoke;
+  position: relative;
+  top: -10em;
+}
+
+.headerCardDesc {
+  display: flex;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+}
+
+.ownerName {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  margin-left: 0.5em;
+  font-family: "lato";
+  text-transform: uppercase;
+}
+
+.postTitle {
+  display: block;
+  color: black;
+  font-size: larger;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+}
+
+.postDescription {
+  color: black;
+  text-decoration: none;
+}
+
+.postHashtag {
+  text-decoration: none;
+}
+
+body {
+  background-color: rgb(245, 245, 245);
+  background-color: rgb(245, 245, 245);
+}
+
+.btnNewCustom {
+  width: 70px;
+}
+
+.alert-dismissible {
+  padding: 10px;
+  max-width: 60%;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.alert-dismissible .btn-close {
+  padding: 14px;
+}
+
+@media (max-width: 450px) {
+  .cardIndex {
+    max-width: 100%;
+  }
+
+  .cardShow {
+    max-width: 100%;
+  }
+
+  .cardUser {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 451px) and (max-width: 800px) {
+  .cardIndex {
+    max-width: 80%;
+  }
+
+  .cardShow {
+    max-width: 80%;
+  }
+
+  .cardUser {
+    max-width: 80%;
+  }
+}

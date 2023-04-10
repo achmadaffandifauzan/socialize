@@ -3,11 +3,12 @@ const Joi = require('joi');
 
 module.exports.postSchema = Joi.object({
     post: Joi.object({
-        title: Joi.string(),
+        title: Joi.string().allow(""),
         description: Joi.string().required(),
-        hashtag: Joi.string(),
-        image: Joi.string(),
-    }).required()
+        hashtag: Joi.string().allow(""),
+        image: Joi.string().allow(""),
+    }).required(),
+    deleteImages: Joi.array()
 });
 
 module.exports.commentSchema = Joi.object({

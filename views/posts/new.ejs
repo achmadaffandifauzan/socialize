@@ -1,22 +1,27 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="col-6 offset-3">
-        <h3 class="text-center mb-4">New Post</h3>
-        <form action="/posts" method="POST" novalidate class="needs-validation">
+        <h3 class="text-center mb-4">NEW POST</h3>
+        <form action="/posts" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="form-group mb-3">
-                <label for="titleNew">Title</label>
+                <label class="form-label" for="titleNew">Title</label>
                 <input type="text" class="form-control" id="titleNew" name="post[title]">
             </div>
             <div class="form-group mb-3">
-                <label for="descriptionNew">Description</label>
+                <label class="form-label" for="descriptionNew">Description</label>
                 <textarea class="form-control" id="descriptionNew" rows="3" name="post[description]"
                     required></textarea>
                 <div class="invalid-feedback">
                     Add something to post!
                 </div>
             </div>
+            <div class="mb-3">
+                <label class="form-label" for="imageNew">Add Images</label>
+                <input type="file" class="form-control" name="post[image]" id="imageNew" multiple>
+
+            </div>
             <div class="form-group mb-3">
-                <label for="hashtagNew">Hashtag</label>
+                <label class="form-label" for="hashtagNew">Hashtag</label>
                 <input type="text" class="form-control" id="hashtagNew" name="post[hashtag]">
             </div>
             <button class="btn btnNewCustom btn-sm btn-success mb-3">Post</button>

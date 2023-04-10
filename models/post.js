@@ -2,11 +2,32 @@ const mongoose = require('mongoose');
 const Comment = require('./comment')
 const { Schema } = mongoose;
 
-const PostSchema = new Schema({
-    title: String,
-    description: String,
-    hashtag: String,
-    image: String,
+const imageSchema = new Schema({
+    url: String,
+    filename: String
+});
+imageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
+const postSchema = new Schema({
+    title: {
+        type: String,
+        required: false,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    hashtag: {
+        type: String,
+        required: false,
+    },
+    images: [imageSchema],
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     comments: [
         {
             type: Schema.Types.ObjectId,
@@ -15,7 +36,7 @@ const PostSchema = new Schema({
     ]
 });
 
-PostSchema.post('findOneAndDelete', async function (doc) {
+postSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
         await Comment.deleteMany({
             _id: {
@@ -25,4 +46,4 @@ PostSchema.post('findOneAndDelete', async function (doc) {
     }
 })
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model('Post', postSchema);
