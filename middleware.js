@@ -6,15 +6,18 @@ const ExpressError = require('./utils/ExpressError');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.lastPath = req.originalUrl;
-        console.log(req.query._method)
-        if (req.query._method === 'DELETE') { req.session.lastPath = '/posts'; } //prevent error because redirecting on link with post / delete / put method create an error
         req.flash('error', "You're not logged in!");
         return res.redirect('/login');
     }
     next();
 }
-
+module.exports.isGuest = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        req.flash('error', "You're still logged in!");
+        return res.redirect('/posts');
+    }
+    next();
+}
 module.exports.isPostAuthor = catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id)
     if (post.author.equals(req.user._id)) {

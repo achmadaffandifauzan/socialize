@@ -1,32 +1,38 @@
 <% layout('layouts/boilerplate') %>
-
-
-    <div class="col-4 offset-1">
-        <h2 class="my-4">Register</h2>
-        <form action="/register" method="POST" class="needs-validation" novalidate>
-            <div class="form-group mb-3">
-                <label for="emailCreate">Email</label>
-                <input type="email" class="form-control" id="emailCreate" name="user[email]" required>
-                <div class="invalid-feedback">
-                    Add email!
-                </div>
+<div class="col-sm-4 offset-sm-4 text-center formContainer my-4">
+    <h2 class="my-4">Register</h2>
+    <form action="/register" method="POST" class="needs-validation formAuth" novalidate>
+        <div class="form-group mb-3">
+            <label for="name" class="my-2">Name</label>
+            <input type="text" class="form-control" id="name" name="user[name]" spellcheck="false" required>
+            <div class="invalid-feedback">
+                Add your name!
             </div>
-            <div class="form-group mb-3">
-                <label for="usernameCreate">Username</label>
-                <input type="text" class="form-control" id="usernameCreate" name="user[username]" required>
-                <div class="invalid-feedback">
-                    Add username!
-                </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="email" class="my-2">Email</label>
+            <input type="email" class="form-control" id="email" name="user[email]" spellcheck="false" required>
+            <div class="invalid-feedback">
+                Add email!
             </div>
-            <div class="form-group mb-3">
-                <label for="passwordCreate">Password</label>
-                <input type="password" class="form-control" id="passwordCreate" name="user[password]" required>
-                <div class="invalid-feedback">
-                    Add password!
-                </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="username" class="my-2">Username</label>
+            <input type="text" class="form-control" id="username" name="user[username]" spellcheck="false" required>
+            <div class="invalid-feedback">
+                Add username!
             </div>
-            <button class="btn btn-success">
-                Register
-            </button>
-        </form>
-    </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="password" class="my-2">Password</label>
+            <input type="password" class="form-control" id="password" name="user[password]" spellcheck="false" required>
+            <div class="invalid-feedback">
+                Add password!
+            </div>
+        </div>
+        <button class="btn btn-success mt-3">
+            Register
+        </button>
+        <div class="mt-3">Already have an account ? <a href="/login">Login</a></div>
+    </form>
+</div>

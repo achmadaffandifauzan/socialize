@@ -3,16 +3,16 @@ const router = express.Router({ mergeParams: true });
 const passport = require('passport');
 const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, isGuest } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
 
-router.get('/register', (req, res) => {
+router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
 })
-router.post('/register', catchAsync(async (req, res, next) => {
+router.post('/register', isGuest, catchAsync(async (req, res, next) => {
     try {
-        const { email, username, password } = req.body.user;
-        const newUser = new User({ email, username });
+        const { email, username, name, password } = req.body.user;
+        const newUser = new User({ email, username, name });
         const registeredUser = await User.register(newUser, password);
         req.login(registeredUser, (error) => {
             if (error) return next(error);
@@ -25,10 +25,10 @@ router.post('/register', catchAsync(async (req, res, next) => {
         res.redirect('/register');
     }
 }));
-router.get('/login', (req, res) => {
+router.get('/login', isGuest, (req, res) => {
     res.render('users/login');
 })
-router.post('/login', passport.authenticate('local',
+router.post('/login', isGuest, passport.authenticate('local',
     { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }),
     catchAsync(async (req, res, next) => {
         req.flash('success', 'Welcome Back!');

@@ -1,31 +1,25 @@
 <% layout('layouts/boilerplate') %>
-
-    <div class="col-6 offset-3">
-        <h3 class="text-center mb-4">NEW POST</h3>
-        <form action="/posts" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
-            <div class="form-group mb-3">
-                <label class="form-label" for="titleNew">Title</label>
-                <input type="text" class="form-control" id="titleNew" name="post[title]">
-            </div>
-            <div class="form-group mb-3">
-                <label class="form-label" for="descriptionNew">Description</label>
-                <textarea class="form-control" id="descriptionNew" rows="3" name="post[description]"
-                    required></textarea>
-                <div class="invalid-feedback">
-                    Add something to post!
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="imageNew">Add Images</label>
-                <input type="file" class="form-control" name="post[image]" id="imageNew" multiple>
-
-            </div>
-            <div class="form-group mb-3">
-                <label class="form-label" for="hashtagNew">Hashtag</label>
-                <input type="text" class="form-control" id="hashtagNew" name="post[hashtag]">
-            </div>
-            <button class="btn btnNewCustom btn-sm btn-success mb-3">Post</button>
-            <a href="/posts"><button type="button"
-                    class="btn btnNewCustom btn-sm btn-danger mb-3 ms-3">Cancel</button></a>
-        </form>
-    </div>
+<div class="col-sm-6 offset-sm-3 formContainer">
+    <h3 class="mb-4 text-center">NEW POST</h3>
+    <form action="/posts" method="POST" class="formPost needs-validation" enctype="multipart/form-data" novalidate>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" placeholder="Title" name="post[title]">
+            <label for="title">Title</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="description" id="description" style="height: 100px"
+                name="post[description]"></textarea>
+            <label for=" description">Description</label>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="image" multiple>Add
+                Images</label>
+            <input type="file" name="post[image]" class="form-control" id="image">
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="hashtag" placeholder="Hashtag" name="post[hashtag]">
+            <label for="title">Hashtag</label>
+        </div>
+        <button class="btn btnNewCustom btn-sm btn-success mb-3">Post</button>
+    </form>
+</div>

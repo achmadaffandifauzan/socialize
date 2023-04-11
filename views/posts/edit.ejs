@@ -1,41 +1,38 @@
 <% layout('layouts/boilerplate') %>
-    <div class="col-6 offset-3">
-        <h3 class="text-center mb-4">EDIT POST</h3>
-        <form action="/posts/<%= post._id %>?_method=PUT " method="POST" novalidate class="needs-validation"
-            enctype="multipart/form-data">
-            <div class="form-group mb-3">
-                <label class="form-label" for="titleEdit">Title</label>
-                <input type="text" class="form-control" id="titleEdit" name="post[title]" value="<%= post.title %> ">
-            </div>
-            <div class="form-group mb-3">
-                <label class="form-label" for="descriptionEdit">Description</label>
-                <textarea class="form-control" id="descriptionEdit" rows="3" name="post[description]"
-                    required><%= post.description %></textarea>
-                <div class="invalid-feedback">
-                    Add something to post!
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="imageEdit">Add Images</label>
-                <input type="file" class="form-control" name="post[image]" id="imageEdit" multiple>
-            </div>
-            <div class="mb-3">
-                <span>Delete Images : </span> <br>
-                <% post.images.forEach(function(image,i) {%>
-                    <label class="form-check-label mb-3" for="imageDelete-<%= i %>">
-                        <input class="form-check-input" name="deleteImages[]" type="checkbox"
-                            value="<%= image.filename %>" id="imageDelete-<%= i %>">
-                        <img src="<%= image.thumbnail %>" class="img-thumbnail" alt="">
-                    </label>
-                    <% }) %>
-            </div>
-            <div class="form-group mb-3">
-                <label class="form-label" for="hashtagEdit">Hashtag</label>
-                <input type="text" class="form-control" id="hashtagEdit" name="post[hashtag]"
-                    value="<%= post.hashtag %> ">
-            </div>
-            <button class="btn btnNewCustom btn-sm btn-success mb-3">Update</button>
-            <a href="/posts/<%= post._id %>"><button type="button"
-                    class="btn btnNewCustom btn-sm btn-danger mb-3 ms-3">Cancel</button></a>
-        </form>
-    </div>
+<div class="col-sm-6 offset-sm-3 formContainer">
+    <h3 class="text-center mb-4">EDIT POST</h3>
+    <form action="/posts/<%= post._id %>?_method=PUT " method="POST" novalidate class="needs-validation"
+        enctype="multipart/form-data">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" placeholder="Title" name="post[title]"
+                value="<%= post.title %>">
+            <label for="title">Title</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="description" id="description" style="height: 100px"
+                name="post[description]"><%= post.description %></textarea>
+            <label for=" description">Description</label>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="image" multiple>Add
+                Images</label>
+            <input type="file" name="post[image]" class="form-control" id="image">
+        </div>
+        <div class="mb-3">
+            <span>Delete Images : </span> <br>
+            <% post.images.forEach(function(image,i) {%>
+            <label class="form-check-label mb-3" for="imageDelete-<%= i %>">
+                <input class="form-check-input" name="deleteImages[]" type="checkbox" value="<%= image.filename %>"
+                    id="imageDelete-<%= i %>">
+                <img src="<%= image.thumbnail %>" class="img-thumbnail" alt="">
+            </label>
+            <% }) %>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="hashtag" placeholder="Hashtag" name="post[hashtag]"
+                value="<%= post.hashtag %>">
+            <label for="title">Hashtag</label>
+        </div>
+        <button class="btn btnNewCustom btn-sm btn-success mb-3">Update</button>
+    </form>
+</div>

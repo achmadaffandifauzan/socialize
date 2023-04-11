@@ -21,7 +21,7 @@ const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
 
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/sosmed');
+mongoose.connect('mongodb://127.0.0.1:27017/socialize');
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connection.once('open', () => {
@@ -53,7 +53,7 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

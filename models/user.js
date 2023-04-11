@@ -8,6 +8,15 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
     posts: [
         {
             type: Schema.Types.ObjectId,
@@ -25,9 +34,11 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
-    ]
+    ],
+    profilePicture: String,
+    backgroundPicture: String,
 });
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 module.exports = mongoose.model('User', userSchema);

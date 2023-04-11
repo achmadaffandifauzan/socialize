@@ -66,7 +66,6 @@ router.put('/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), valida
         await post.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
     }
     post.save();
-    //console.log("___________UPDATED____________", post)
     req.flash('success', 'Successfully updated post!')
     res.redirect(`/posts/${id}`);
 }))
