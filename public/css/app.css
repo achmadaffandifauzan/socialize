@@ -12,6 +12,7 @@ main {
 /* ------- */
 
 nav {
+
   background-color: rgba(223, 225, 238, 0) !important;
   width: fit-content;
   float: right;
@@ -21,13 +22,141 @@ nav {
 
 .navbar-toggler {
   border: 0;
-  background-color: #5969F1;
+  background-color: white;
+  border: 4px solid #5969F1;
+  color: #5969F1;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 60px;
   height: 40px;
   border-radius: 60px !important;
+  transition: 0.3s;
+}
+
+.navbar-toggler:focus {
+  background-color: white;
+  color: #5969F1;
+}
+
+.navbar-toggler .material-symbols-rounded {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 600,
+    'GRAD' 0,
+    'opsz' 48
+}
+
+.offcanvas-header {
+  color: #5969F1;
+}
+
+.offcanvas-backdrop.show {
+  opacity: 15%;
+}
+
+#offcanvasNavbar {
+  background-color: white;
+  border: 0;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+}
+
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 25px;
+  height: 70px;
+}
+
+.navbar-nav .nav-item {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5969F1;
+  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 25px;
+  transition: 0.3s;
+}
+
+.navbar-nav .nav-item:hover {
+  width: 70px;
+  height: 70px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.navbar-nav .material-symbols-rounded {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: white;
+}
+
+
+.findPostNavbarForm input {
+  border-radius: 20px;
+  border: 3px solid #5969F1;
+  color: #5969F1;
+}
+
+.findPostNavbarForm input::placeholder {
+  color: #5969F1;
+}
+
+.findPostNavbarForm button {
+  border-radius: 20px !important;
+  border: 3px solid #5969F1;
+  color: #5969F1;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.findPostNavbarForm button:hover {
+  background-color: #5969F1;
+  color: white;
+}
+
+.accountNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5969F1;
+  background: linear-gradient(200deg, rgba(89, 105, 241, 1) 0%, rgba(156, 166, 255, 1) 100%);
+  padding: 20px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.accountNav:hover {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.accountNav a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.accountNav a .material-symbols-rounded {
+  font-size: 50px;
 }
 
 @media (max-width: 600px) {
@@ -46,6 +175,7 @@ nav {
 /* ------- */
 /* AUTH PAGE */
 /* ------- */
+
 .formAuth .form-control {
   border: 0;
   background-color: #d6dff4;
@@ -59,6 +189,7 @@ nav {
 
 .formAuth button {
   width: 100%;
+  background-color: #5969F1;
   background: linear-gradient(to right, #5969F1, #9CA6FF);
   border: 0;
   border-radius: 50px !important;
@@ -81,6 +212,7 @@ nav {
 
 .btnNewCustom {
   width: 100%;
+  background-color: #5969F1;
   background: linear-gradient(to right, #5969F1, #9CA6FF);
   border: 0;
   border-radius: 20px !important;
@@ -91,25 +223,28 @@ nav {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.card {
-  border-radius: 0 !important;
-  border: 0;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-}
 
 .cardIndex {
   max-width: 50%;
   margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .card-header {
-  border-radius: 0 !important;
+  background-color: #5969F1;
+  border: 0;
+}
+
+.card-header a {
+  color: white;
 }
 
 .card-footer {
-  border: 0;
-  border-radius: 0 !important;
   background-color: white;
+  border: 0;
 }
 
 .cardShow {
@@ -223,13 +358,22 @@ button {
 
 
 .alert-dismissible {
-  padding: 10px;
-  max-width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 80px;
+  padding: 8px 20px;
+  max-width: 85%;
   margin: auto;
   margin-bottom: 15px;
+  left: 0;
+  right: 0;
+  z-index: 2000;
 }
 
 .alert-dismissible .btn-close {
+  position: relative;
   padding: 14px;
 }
 
