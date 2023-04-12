@@ -1,19 +1,22 @@
 <% layout('layouts/boilerplate') %>
-<% for (let post of posts) {%>
-<div class="cardIndex card my-4">
-    <div class="card-header">
-        <a href="/<%= post.author._id %>" class="ownerName">
-            <%=post.author.username%>
-        </a>
-    </div>
-    <div class="card-body pb-1">
-        <a href="/posts/<%=post._id%>" class="postTitle">
-            <%=post.title%>
-        </a>
-        <a href="/posts/<%=post._id%>" class="postDescription">
-            <p>
-                <%= post.description %>
-            </p>
+<div class="indexContainer">
+    <% for (let post of posts) {%>
+    <div class="cardIndex card my-4">
+
+        <div class="card-header">
+            <a href="/<%= post.author._id %>" class="ownerName">
+                <%=post.author.name%>
+            </a>
+        </div>
+
+        <a href="/posts/<%=post._id%>" class="text-decoration-none">
+            <div class="card-body pb-1">
+                <div class="postTitle">
+                    <%=post.title%>
+                </div>
+                <div class="postDescription">
+                    <%= post.description %>
+                </div>
         </a>
         <p class="mb-0">
             <a href="" class="postHashtag">
@@ -27,5 +30,17 @@
     <div class="card-footer text-muted">
         2 days ago
     </div>
+
 </div>
 <% } %>
+</div>
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="?page=<%= pageBefore %>">&laquo; Previous</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page=<%= pageAfter%>">Next &raquo;</a>
+        </li>
+    </ul>
+</nav>

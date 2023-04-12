@@ -5,15 +5,33 @@ const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
+const multer = require('multer');
+const { storage, cloudinary } = require('../cloudinary');
+const upload = multer({ storage });
 
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
 })
-router.post('/register', isGuest, catchAsync(async (req, res, next) => {
+router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), catchAsync(async (req, res, next) => {
     try {
         const { email, username, name, password } = req.body.user;
+        // const { profilePicture, backgroundPicture } = req.files;
+        // console.log(req.files);
         const newUser = new User({ email, username, name });
+
+        newUser.profilePicture = {
+            url: req.files['user[profilePicture]'][0]['path'],
+            filename: req.files['user[profilePicture]'][0]['filename']
+        };
+        newUser.backgroundPicture = {
+            url: req.files['user[backgroundPicture]'][0]['path'],
+            filename: req.files['user[backgroundPicture]'][0]['filename']
+        };
         const registeredUser = await User.register(newUser, password);
+
+
+        console.log(newUser)
+        await newUser.save();
         req.login(registeredUser, (error) => {
             if (error) return next(error);
             req.flash('success', 'Successfully Registered!');

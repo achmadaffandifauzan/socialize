@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const { Schema } = mongoose;
-
+const imageSchema = new Schema({
+    url: String,
+    filename: String
+});
+imageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200');
+});
 const userSchema = new Schema({
     email: {
         type: String,
@@ -35,8 +41,8 @@ const userSchema = new Schema({
             ref: 'User'
         }
     ],
-    profilePicture: String,
-    backgroundPicture: String,
+    profilePicture: imageSchema,
+    backgroundPicture: imageSchema,
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

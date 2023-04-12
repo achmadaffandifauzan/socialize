@@ -12,12 +12,13 @@ main {
 /* ------- */
 
 nav {
-
+  display: flex;
   background-color: rgba(223, 225, 238, 0) !important;
   width: fit-content;
   float: right;
   right: 0 !important;
   left: auto !important;
+
 }
 
 .navbar-toggler {
@@ -166,6 +167,10 @@ nav {
     background-color: #d6dff4 !important;
   }
 
+  .mainPage {
+    padding-top: 0 !important;
+  }
+
   .navbar-toggler {
     width: 48px;
     height: 32px;
@@ -194,6 +199,7 @@ nav {
   border: 0;
   border-radius: 50px !important;
 }
+
 
 /* ------- */
 /* NEW EDIT POST PAGE */
@@ -224,8 +230,20 @@ nav {
 }
 
 
+
+/* ------- */
+/* INDEX PAGE */
+/* ------- */
+.indexContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .cardIndex {
-  max-width: 50%;
+  width: 42%;
+  height: fit-content;
+  flex-wrap: wrap;
   margin: auto;
   border-radius: 20px;
   overflow: hidden;
@@ -233,30 +251,14 @@ nav {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.card-header {
-  background-color: #5969F1;
-  border: 0;
-}
-
-.card-header a {
-  color: white;
-}
-
-.card-footer {
-  background-color: white;
-  border: 0;
-}
-
 .cardShow {
   max-width: 60%;
   margin: auto;
 }
 
-button {
-  border-radius: 0 !important;
-}
-
-
+/* ------- */
+/* SHOW PAGE */
+/* ------- */
 
 .image-post-index {
   max-height: 300px;
@@ -302,6 +304,77 @@ button {
   justify-content: space-between;
 }
 
+/* ------- */
+/* MANAGE PAGE */
+/* ------- */
+.cardUser {
+  height: fit-content;
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.cardFriends {
+  height: fit-content;
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.cardFriends .card-header {
+  color: white;
+}
+
+.cardFriends .cardShow {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.cardFriends .card-header {
+  color: white;
+}
+
+.cardFriends ul li a {
+  text-decoration: none;
+  color: #5969F1;
+}
+
+.card-header {
+  background-color: #5969F1;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-header a {
+  color: white;
+}
+
+.ownerName {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  margin-left: 0.5em;
+
+}
+
+.card-footer {
+  background-color: white;
+  border: 0;
+}
+
+.cardProfileContainer {
+  border: 0;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
 .profileBgImage {
   height: 15em;
 }
@@ -320,6 +393,10 @@ button {
   top: -10em;
 }
 
+.profileBgImage {
+  object-fit: cover;
+}
+
 .headerCardDesc {
   display: flex;
   align-items: center;
@@ -327,14 +404,7 @@ button {
   text-decoration: none;
 }
 
-.ownerName {
-  display: flex;
-  text-decoration: none;
-  align-items: center;
-  margin-left: 0.5em;
-  font-family: "lato";
-  text-transform: uppercase;
-}
+
 
 .postTitle {
   display: block;
@@ -369,7 +439,7 @@ button {
   margin-bottom: 15px;
   left: 0;
   right: 0;
-  z-index: 2000;
+  z-index: 1500;
 }
 
 .alert-dismissible .btn-close {

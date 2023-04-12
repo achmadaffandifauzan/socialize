@@ -5,7 +5,7 @@
 <div class="cardShow card mt-0">
     <div id="cardShowHeader" class="card-header">
         <a class="ownerName" href="/<%= post.author._id %>">
-            <%= post.author.username %>
+            <%= post.author.name %>
         </a>
     </div>
     <div class="card-body pb-1">
@@ -93,7 +93,7 @@
     <div class="cardShow card mb-2">
         <div class="card-header">
             <a class="ownerName" href="">
-                <%= comment.author.username %>
+                <%= comment.author.user %>
             </a>
             <% if(currentUser && comment.author.equals(currentUser._id)) {%>
             <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">

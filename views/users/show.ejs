@@ -1,35 +1,21 @@
 <% layout('layouts/boilerplate') %>
-<div class="card mb-4">
-  <img
-    src="https://images.unsplash.com/photo-1674240587643-4b261f0dceb6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=30"
-    class="card-img-top img-fluid profileBgImage"
-    alt="..."
-  />
+<div class="card cardProfileContainer col-sm-8 offset-sm-2 mb-4">
+  <img src="<%=user.backgroundPicture.url%>" class="card-img-top img-fluid profileBgImage" alt="..." />
   <div class="profileImageWrapper">
-    <img
-      src="https://images.unsplash.com/photo-1674289838075-f3d7d572fc80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=20"
-      class="profileImage img-fluid mx-auto d-block"
-      alt="..."
-    />
+    <img src="<%= user.profilePicture.url %>" class="profileImage img-fluid mx-auto d-block" alt="..." />
   </div>
   <div class="card-body">
-    <h3 class="card-title"><%= user.username %></h3>
+    <h3 class="card-title"><%= user.name %></h3>
     <% if (currentUser) {%> <% if (user._id.equals(currentUser._id)==false) {%>
     <% if (isFriend==false) { %>
     <h4>
-      <form
-        action="/requestFriend/<%= user._id %>/<%= currentUser._id %>"
-        method="POST"
-      >
+      <form action="/requestFriend/<%= user._id %>/<%= currentUser._id %>" method="POST">
         <button>Add Friend</button>
       </form>
     </h4>
     <% } else { %>
     <h4>
-      <form
-        action="/<%= user._id %>/<%= currentUser._id %>?_method=DELETE"
-        method="POST"
-      >
+      <form action="/<%= user._id %>/<%= currentUser._id %>?_method=DELETE" method="POST">
         <button>Delete Friend</button>
       </form>
     </h4>
@@ -46,15 +32,14 @@
 <div class="row">
   <div class="col-3">
     <% if (currentUser) { %> <% if (user._id.equals(currentUser._id)) {%>
-    <div class="card m-auto mb-4" style="width: 12rem">
-      <!-- style it !!! -->
-      <div class="card-header text-center">FRIEND REQUESTS</div>
-      <% if (user.friendRequests.length> 0){ %>
+    <div class="card m-auto mb-4 cardFriends" style="width: 12rem">
+      <div class="card-header text-center">Friend Requests</div>
+      <% if (user.friendRequests.length){ %>
       <ul class="list-group list-group-flush">
-        <% for (let req of user.friendRequests) {%>
+        <% for (let fr of user.friendRequests) {%>
         <li class="list-group-item">
-          <span class="mb-2"> <%= req.username %> </span>
-          <form action="/<%= req._id %>/<%= currentUser._id %>" method="POST">
+          <span class="mb-2"> <%= fr.user %> </span>
+          <form action="/<%= fr._id %>/<%= currentUser._id %>" method="POST">
             <button class="btn btn-sm btn-info">Accept Request</button>
           </form>
         </li>
@@ -67,13 +52,13 @@
       <% } %>
     </div>
     <% }%> <% }%>
-    <div class="card m-auto mb-4" style="width: 12rem">
-      <div class="card-header text-center">FRIENDS</div>
+    <div class="card m-auto mb-4 cardFriends" style="width: 12rem">
+      <div class="card-header text-center">Friends</div>
       <% if (user.friends.length>0) {%>
       <ul class="list-group list-group-flush">
         <% for (let friend of user.friends) {%>
         <li class="list-group-item">
-          <a href="/<%= friend._id %> "> <%= friend.username %> </a>
+          <a href="/<%= friend._id %> "> <%= friend.name %> </a>
         </li>
         <% } %>
       </ul>
@@ -88,7 +73,7 @@
     <% for (let post of user.posts) {%>
     <div class="cardUser card mb-4">
       <div class="card-header">
-        <a href="/<%= user._id %>" class="ownerName"> <%=user.username%> </a>
+        <a href="/<%= user._id %>" class="ownerName"> <%=user.name%> </a>
       </div>
       <div class="card-body pb-0">
         <a href="posts/<%=post._id%>" class="postTitle"> <%=post.title%> </a>
@@ -100,11 +85,7 @@
         </p>
       </div>
       <% if (post.images.length>= 1){ %>
-      <img
-        src="<%=post.images[0].url%>"
-        class="border border-2 mx-0 my-0 image-post-userShow"
-        alt="..."
-      />
+      <img src="<%=post.images[0].url%>" class="border border-2 mx-0 my-0 image-post-userShow" alt="..." />
       <% } %>
       <div class="card-footer text-muted">2 days ago</div>
     </div>

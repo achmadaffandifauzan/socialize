@@ -66,13 +66,10 @@ app.use((req, res, next) => {
 })
 
 
-app.use('/posts', postsRoutes);
+app.use('/', postsRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
 app.use('/', userRoutes);
 
-app.get('/', (req, res) => {
-    res.render('home');
-})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Not Found!', 404))

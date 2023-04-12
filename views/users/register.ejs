@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 <div class="col-sm-4 offset-sm-4 text-center formContainer my-5">
     <h2 class="my-4">Register</h2>
-    <form action="/register" method="POST" class="needs-validation formAuth" novalidate>
+    <form action="/register" method="POST" class="needs-validation formAuth" enctype='multipart/form-data' novalidate>
         <div class="form-group mb-3">
             <label for="name" class="my-2">Name</label>
             <input type="text" class="form-control" id="name" name="user[name]" spellcheck="false" required>
@@ -29,6 +29,14 @@
             <div class="invalid-feedback">
                 Add password!
             </div>
+        </div>
+        <div class="mb-3">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input class="form-control" name="user[profilePicture]" type="file" id="profilePicture">
+        </div>
+        <div class="mb-3">
+            <label for="backgroundPicture" class="form-label">Background Pircture</label>
+            <input class="form-control" name="user[backgroundPicture]" type="file" id="backgroundPicture">
         </div>
         <button class="btn btn-success mt-3">
             Register

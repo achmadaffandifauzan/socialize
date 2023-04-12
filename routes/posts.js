@@ -9,15 +9,23 @@ const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
 
 
-
 router.get('/', catchAsync(async (req, res, next) => {
-    const posts = await Post.find({}).populate('author');
-    res.render('posts/index', { posts })
+    res.redirect('posts');
 }))
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/posts', catchAsync(async (req, res, next) => {
+    let page = parseInt(req.query.page) || 0;
+    // console.log(page)
+    let pageBefore = (page == 0) ? 0 : page - 1;
+    let pageAfter = page + 1
+    let limit = 10;
+    let skip = limit * page;
+    const posts = await Post.find({}).limit(limit).skip(skip).populate('author');
+    res.render('posts/index', { posts, pageBefore, pageAfter })
+}))
+router.get('/posts/new', isLoggedIn, (req, res) => {
     res.render('posts/new');
 })
-router.get('/:id', catchAsync(async (req, res, next) => {
+router.get('/posts/:id', catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id)
         .populate({ path: 'comments', populate: { path: 'author' } })
         .populate('author');
@@ -28,7 +36,7 @@ router.get('/:id', catchAsync(async (req, res, next) => {
         res.render('posts/show', { post });
     }
 }))
-router.get('/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
+router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id);
     if (!post) {
         req.flash('error', "Post doesn't exist");
@@ -37,7 +45,8 @@ router.get('/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, res, ne
         res.render('posts/edit', { post });
     }
 }))
-router.post('/', isLoggedIn, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+    console.log(req)
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;
@@ -54,7 +63,7 @@ router.post('/', isLoggedIn, upload.array('post[image]'), validatePost, catchAsy
 //     console.log(req.body, req.files);
 //     res.send('it worked')
 // })
-router.put('/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findByIdAndUpdate(id, { ...req.body.post });
     const imagesArr = req.files.map(file => ({ url: file.path, filename: file.filename }));
@@ -70,7 +79,7 @@ router.put('/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), valida
     res.redirect(`/posts/${id}`);
 }))
 
-router.delete('/:id', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
+router.delete('/posts/:id', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     await Post.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted post!')
