@@ -11,6 +11,7 @@ main {
   border-radius: 20px !important;
 }
 
+
 /* ------- */
 /* NAVBAR */
 /* ------- */
@@ -177,7 +178,7 @@ main {
   }
 
   .mainPage {
-    padding-top: 0 !important;
+    padding-top: 20px !important;
   }
 
   .navbar-toggler {
@@ -301,14 +302,6 @@ main {
   border: none;
 }
 
-.dropendShowPage button:hover {
-  color: #9CA6FF;
-}
-
-.dropendShowPage button:focus {
-  color: white;
-}
-
 .dropdown-menu {
   transform: translate3d(-58.6667px, -5px, 0px) !important;
 }
@@ -316,11 +309,6 @@ main {
 /* ------- */
 /* MANAGE PAGE */
 /* ------- */
-.containerManage {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 20px;
-}
 
 .cardUser {
   height: fit-content;

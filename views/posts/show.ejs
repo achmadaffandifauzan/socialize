@@ -14,14 +14,14 @@
                     list
                 </span>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu borderRadius">
 
                 <li>
                     <div id="buttonShow" class="d-flex justify-content-around">
-                        <a href="/posts/<%= post._id %>/edit"><button type="button"
-                                class="btn btn-sm btn-info">Edit</button></a>
+                        <a class="text-decoration-none" href="/posts/<%= post._id %>/edit"><button type="button"
+                                class="btn btn-sm btn-info borderRadius">Edit</button></a>
                         <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button class="btn btn-sm btn-danger borderRadius">Delete</button>
                         </form>
                     </div>
                 </li>
@@ -89,8 +89,10 @@
         <button class="borderRadius btn btn-sm btn-success mt-3">Comment</button>
     </form>
 </div>
+<% } else {%>
+<div class="col-sm-8 offset-sm-2 my-4">Login to add comments!</div>
 <% } %>
-<h4 class="borderRadius col-sm-8 offset-sm-2 my-4">Comments</h4>
+<div class="col-sm-8 offset-sm-2 my-4 text-center">Comments</div>
 <% for (let comment of post.comments) {%>
 <div class="borderRadius overflow-hidden card mb-2 col-sm-8 offset-sm-2">
     <div class="card-header d-flex justify-content-between">
@@ -99,7 +101,7 @@
         </a>
         <% if(currentUser && comment.author.equals(currentUser._id)) {%>
         <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-sm btn-danger">Delete</button>
+            <button class="btn btn-sm btn-danger borderRadius">Delete</button>
         </form>
         <% } %>
     </div>
