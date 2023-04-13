@@ -7,7 +7,7 @@ const { isLoggedIn, isPostAuthor, validatePost } = require('../middleware');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
 
 router.get('/', catchAsync(async (req, res, next) => {
     res.redirect('posts');

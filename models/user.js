@@ -43,6 +43,12 @@ const userSchema = new Schema({
     ],
     profilePicture: imageSchema,
     backgroundPicture: imageSchema,
+    dateCreated: {
+        type: String,
+    },
+    lastOnline: {
+        type: String,
+    }
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

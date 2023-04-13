@@ -7,6 +7,10 @@ main {
   padding: 0;
 }
 
+.borderRadius {
+  border-radius: 20px !important;
+}
+
 /* ------- */
 /* NAVBAR */
 /* ------- */
@@ -77,6 +81,10 @@ main {
   flex-direction: row;
   gap: 25px;
   height: 70px;
+}
+
+.navbar-nav a {
+  text-decoration: none;
 }
 
 .navbar-nav .nav-item {
@@ -282,17 +290,6 @@ main {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: max-content;
-  justify-content: space-between;
-}
-
-
-#commentsShow form {
-  display: flex;
-  justify-content: flex-end;
-}
-
-#commentsShow .card-header {
-  display: flex;
   justify-content: space-between;
 }
 

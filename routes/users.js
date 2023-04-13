@@ -8,6 +8,7 @@ const ExpressError = require('../utils/ExpressError');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
+const dayjs = require('dayjs');
 
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
@@ -29,7 +30,9 @@ router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]',
         };
         const registeredUser = await User.register(newUser, password);
 
-
+        const currentTime = dayjs().format("HH:mm");
+        const currentDate = dayjs().format("D MMM YY");
+        newUser.dateCreated = `${currentTime} - ${currentDate}`;
         // console.log(newUser)
         await newUser.save();
         req.login(registeredUser, (error) => {
@@ -80,9 +83,14 @@ router.delete('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, n
     await user2.save()
     res.redirect(`/${friendId}`);
 }))
-router.get('/logout', isLoggedIn, catchAsync(async (req, res, next) => {
-    req.logout((error) => {
+router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
+    req.logout(async (error) => {
         if (error) return next(error)
+        const currentTime = dayjs().format("HH:mm");
+        const currentDate = dayjs().format("D MMM YY");
+        await User.updateOne(
+            { id: req.params.userId },
+            { lastOnline: `${currentTime} - ${currentDate}` });
         req.flash('success', "You're Logged Out!");
         res.redirect('/posts');
     });

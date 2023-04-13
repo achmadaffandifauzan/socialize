@@ -78,37 +78,40 @@
 
 </div>
 <% if(currentUser) {%>
-<div class="cardShow col-sm-8 offset-sm-2 my-3">
+<div class="col-sm-8 offset-sm-2 my-3">
     <form action="/posts/<%= post._id %>/comments" method="POST" class="needs-validation" novalidate>
         <label class="form-label" for="commentAdd"> Add Comment</label>
-        <textarea class="form-control" name="comment[text]" id="commentAdd" cols="50" rows="2" required></textarea>
+        <textarea class="form-control borderRadius" name="comment[text]" id="commentAdd" cols="50" rows="2"
+            required></textarea>
         <div class="invalid-feedback">
             Add something to comment!
         </div>
-        <button class="btn btn-sm btn-success mt-3">Comment</button>
+        <button class="borderRadius btn btn-sm btn-success mt-3">Comment</button>
     </form>
 </div>
 <% } %>
-<h4 class="cardShow col-sm-8 offset-sm-2 my-4">Comments</h4>
+<h4 class="borderRadius col-sm-8 offset-sm-2 my-4">Comments</h4>
 <% for (let comment of post.comments) {%>
-<div id="commentsShow col-sm-6 offset-sm-3">
-    <div class="cardShow card mb-2">
-        <div class="card-header">
-            <a class="ownerName" href="">
-                <%= comment.author.user %>
-            </a>
-            <% if(currentUser && comment.author.equals(currentUser._id)) {%>
-            <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-                <button class="btn btn-sm btn-danger">Delete</button>
-            </form>
-            <% } %>
+<div class="borderRadius overflow-hidden card mb-2 col-sm-8 offset-sm-2">
+    <div class="card-header d-flex justify-content-between">
+        <a class="ownerName" href="">
+            <%= comment.author.name %>
+        </a>
+        <% if(currentUser && comment.author.equals(currentUser._id)) {%>
+        <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+        <% } %>
+    </div>
+    <div class="card-body d-flex justify-content-between">
+        <div class="card-text">
+            <%= comment.text %>
         </div>
-        <div class="card-body">
-            <p class="card-text">
-                <%= comment.text %>
-            </p>
+        <div class=" text-muted fw-light fst-italic text-end font-size-sm small">
+            <%= comment.dateCreated %>
         </div>
     </div>
+
 </div>
 <% } %>
 </div>
