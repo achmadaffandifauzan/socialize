@@ -9,6 +9,7 @@ const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
 const dayjs = require('dayjs');
+const { equal } = require('joi');
 
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
@@ -64,6 +65,11 @@ router.post('/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async 
     await user.save()
     res.redirect(`/${friendId}`);
 }))
+router.post('/cancelRequestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+    const { currentId, friendId } = req.params;
+    await User.findByIdAndUpdate(friendId, { $pull: { friendRequests: currentId } });
+    res.redirect(`/${friendId}`);
+}))
 router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
     const user = await User.findById(currentId);
@@ -98,13 +104,16 @@ router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
 // dont forget to change to user/:userId/ later
 router.get('/:userId/', catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-    const user = await User.findById(userId).populate('posts').populate('friendRequests').populate('friends');
+    let user = await User.findById(userId).populate('posts').populate('friendRequests').populate('friends');
     const currentUser = req.user;
-    if (currentUser) {
+    if (currentUser && currentUser._id.equals(userId) == false) {
         const user2 = await User.findById(currentUser._id);
         const isFriend = user2.friends.includes(user._id) ? true : false;
-        // console.log(user)
-        res.render('users/show', { user, isFriend })
+        let isRequestingFriend = await User.findById(
+            req.params.userId).where('friendRequests').equals(req.user._id);
+        (isRequestingFriend) ? isRequestingFriend = true : isRequestingFriend = false;
+        // why not isRequestingFriend = user.friendRequests.includes(user2._id) ?? because friendRequests.includes wont work if User.find() use populate
+        res.render('users/show', { user, isFriend, isRequestingFriend })
     } else {
         res.render('users/show', { user })
     }

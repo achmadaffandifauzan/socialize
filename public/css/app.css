@@ -11,6 +11,22 @@ main {
   border-radius: 20px !important;
 }
 
+.btn-socialize {
+  background-color: #5969F1;
+  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-socialize:hover {
+  color: white;
+  border: 2px solid #9CA6FF;
+}
+
+.btn-socialize:focus {
+  border: 2px solid #9CA6FF;
+  color: white;
+}
 
 /* ------- */
 /* NAVBAR */

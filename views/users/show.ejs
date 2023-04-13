@@ -7,16 +7,20 @@
   <div class="card-body">
     <h3 class="card-title"><%= user.name %></h3>
     <% if (currentUser) {%> <% if (user._id.equals(currentUser._id)==false) {%>
-    <% if (isFriend==false) { %>
+    <% if (isFriend==false && isRequestingFriend==false) { %>
     <h4>
       <form action="/requestFriend/<%= user._id %>/<%= currentUser._id %>" method="POST">
-        <button>Add Friend</button>
+        <button class="btn btn-socialize borderRadius">Add Friend</button>
       </form>
     </h4>
+    <% } else if(isRequestingFriend==true) {%>
+    <form action="/cancelRequestFriend/<%= user._id %>/<%= currentUser._id %>" method="POST">
+      <button class="btn btn-socialize borderRadius">Cancel Friend Request</button>
+    </form>
     <% } else { %>
     <h4>
       <form action="/<%= user._id %>/<%= currentUser._id %>?_method=DELETE" method="POST">
-        <button>Delete Friend</button>
+        <button class="btn btn-socialize borderRadius">Delete Friend</button>
       </form>
     </h4>
     <% } %> <% } %> <% } %>
