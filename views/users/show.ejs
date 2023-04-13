@@ -28,8 +28,20 @@
       This is a wider card with supporting text below as a natural lead-in to
       additional content. This content is a little bit longer.
     </p>
-    <div class="card-footer text-muted fw-light fst-italic text-end font-size-sm small">
-      Last seen : <%= user.lastOnline %>
+    <div class="d-flex justify-content-between">
+      <div class="text-muted fw-light fst-italic font-size-sm small">
+        User since : <%= user.dateCreated %>
+      </div>
+      <div class="text-muted fw-light fst-italic font-size-sm small">
+        <% if (currentUser) { %>
+        <% if (user._id.equals(currentUser._id)) {%>
+        Last seen : Online
+        <% } else { %>
+        Last seen : <%= user.lastOnline %>
+        <%}} else {%>
+        Last seen : <%= user.lastOnline %>
+        <% } %>
+      </div>
     </div>
   </div>
 </div>
@@ -41,7 +53,7 @@
     <ul class="list-group list-group-flush">
       <% for (let fr of user.friendRequests) {%>
       <li class="list-group-item">
-        <span class="mb-2"> <%= fr.user %> </span>
+        <span class="mb-2"> <%= fr.name %> </span>
         <form action="/<%= fr._id %>/<%= currentUser._id %>" method="POST">
           <button class="btn btn-sm btn-info">Accept Request</button>
         </form>

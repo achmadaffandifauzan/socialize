@@ -9,7 +9,6 @@ const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
 const dayjs = require('dayjs');
-const { equal } = require('joi');
 
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
@@ -94,8 +93,7 @@ router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
         if (error) return next(error)
         const currentTime = dayjs().format("HH:mm");
         const currentDate = dayjs().format("D MMM YY");
-        await User.updateOne(
-            { id: req.params.userId },
+        await User.findByIdAndUpdate(req.params.userId,
             { lastOnline: `${currentTime} - ${currentDate}` });
         req.flash('success', "You're Logged Out!");
         res.redirect('/posts');
