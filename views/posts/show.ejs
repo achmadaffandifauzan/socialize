@@ -2,24 +2,22 @@
 <html lang="en">
 
 <% layout('layouts/boilerplate') %>
-<div class="cardShow card mt-0">
+<div class="cardShow col-sm-8 offset-sm-2 card mt-0">
     <div id="cardShowHeader" class="card-header">
         <a class="ownerName" href="/<%= post.author._id %>">
             <%= post.author.name %>
         </a>
-    </div>
-    <div class="card-body pb-1">
-
         <% if(currentUser && post.author.equals(currentUser._id)) {%>
-        <div class="btn-group dropend">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Dropend
+        <div class="btn-group dropend dropendShowPage">
+            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="material-symbols-rounded">
+                    list
+                </span>
             </button>
             <ul class="dropdown-menu">
 
                 <li>
-                    <div id="buttonShow">
+                    <div id="buttonShow" class="d-flex justify-content-around">
                         <a href="/posts/<%= post._id %>/edit"><button type="button"
                                 class="btn btn-sm btn-info">Edit</button></a>
                         <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
@@ -31,6 +29,10 @@
             </ul>
         </div>
         <% } %>
+    </div>
+    <div class="card-body pb-1">
+
+
         <h4 class="postTitle">
             <%= post.title %>
         </h4>
@@ -70,13 +72,13 @@
         </button>
         <% } %>
     </div>
-    <div class="card-footer text-muted">
-        2 days ago
+    <div class="card-footer text-muted fw-light fst-italic text-end font-size-sm small">
+        <%= post.dateCreated %>
     </div>
 
 </div>
 <% if(currentUser) {%>
-<div class="cardShow my-3">
+<div class="cardShow col-sm-8 offset-sm-2 my-3">
     <form action="/posts/<%= post._id %>/comments" method="POST" class="needs-validation" novalidate>
         <label class="form-label" for="commentAdd"> Add Comment</label>
         <textarea class="form-control" name="comment[text]" id="commentAdd" cols="50" rows="2" required></textarea>
@@ -87,9 +89,9 @@
     </form>
 </div>
 <% } %>
-<h4 class="cardShow my-4">Comments</h4>
+<h4 class="cardShow col-sm-8 offset-sm-2 my-4">Comments</h4>
 <% for (let comment of post.comments) {%>
-<div id="commentsShow">
+<div id="commentsShow col-sm-6 offset-sm-3">
     <div class="cardShow card mb-2">
         <div class="card-header">
             <a class="ownerName" href="">

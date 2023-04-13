@@ -11,7 +11,8 @@ main {
 /* NAVBAR */
 /* ------- */
 
-nav {
+#navbar {
+  padding: 5px;
   display: flex;
   background-color: rgba(223, 225, 238, 0) !important;
   width: fit-content;
@@ -161,7 +162,7 @@ nav {
 }
 
 @media (max-width: 600px) {
-  nav {
+  #navbar {
     width: 100%;
     position: relative !important;
     background-color: #d6dff4 !important;
@@ -241,9 +242,7 @@ nav {
 }
 
 .cardIndex {
-  width: 42%;
   height: fit-content;
-  flex-wrap: wrap;
   margin: auto;
   border-radius: 20px;
   overflow: hidden;
@@ -251,14 +250,16 @@ nav {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.cardShow {
-  max-width: 60%;
-  margin: auto;
-}
 
 /* ------- */
 /* SHOW PAGE */
 /* ------- */
+
+.cardShow {
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+}
 
 .image-post-index {
   max-height: 300px;
@@ -281,18 +282,9 @@ nav {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: max-content;
+  justify-content: space-between;
 }
 
-#buttonShow {
-  display: flex;
-  align-self: center;
-  justify-self: end;
-}
-
-#buttonShow form {
-  display: inline-block;
-  margin-left: 0.5em;
-}
 
 #commentsShow form {
   display: flex;
@@ -304,9 +296,35 @@ nav {
   justify-content: space-between;
 }
 
+.dropendShowPage button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: none;
+}
+
+.dropendShowPage button:hover {
+  color: #9CA6FF;
+}
+
+.dropendShowPage button:focus {
+  color: white;
+}
+
+.dropdown-menu {
+  transform: translate3d(-58.6667px, -5px, 0px) !important;
+}
+
 /* ------- */
 /* MANAGE PAGE */
 /* ------- */
+.containerManage {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 20px;
+}
+
 .cardUser {
   height: fit-content;
   margin: auto;
@@ -323,6 +341,7 @@ nav {
   overflow: hidden;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 80%;
 }
 
 .cardFriends .card-header {
@@ -445,32 +464,4 @@ nav {
 .alert-dismissible .btn-close {
   position: relative;
   padding: 14px;
-}
-
-@media (max-width: 450px) {
-  .cardIndex {
-    max-width: 100%;
-  }
-
-  .cardShow {
-    max-width: 100%;
-  }
-
-  .cardUser {
-    max-width: 100%;
-  }
-}
-
-@media (min-width: 451px) and (max-width: 800px) {
-  .cardIndex {
-    max-width: 80%;
-  }
-
-  .cardShow {
-    max-width: 80%;
-  }
-
-  .cardUser {
-    max-width: 80%;
-  }
 }

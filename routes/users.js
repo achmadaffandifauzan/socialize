@@ -30,7 +30,7 @@ router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]',
         const registeredUser = await User.register(newUser, password);
 
 
-        console.log(newUser)
+        // console.log(newUser)
         await newUser.save();
         req.login(registeredUser, (error) => {
             if (error) return next(error);
@@ -95,7 +95,7 @@ router.get('/:userId/', catchAsync(async (req, res, next) => {
     if (currentUser) {
         const user2 = await User.findById(currentUser._id);
         const isFriend = user2.friends.includes(user._id) ? true : false;
-        console.log(user)
+        // console.log(user)
         res.render('users/show', { user, isFriend })
     } else {
         res.render('users/show', { user })

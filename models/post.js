@@ -33,7 +33,10 @@ const postSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Comment'
         }
-    ]
+    ],
+    dateCreated: {
+        type: String,
+    }
 });
 
 postSchema.post('findOneAndDelete', async function (doc) {

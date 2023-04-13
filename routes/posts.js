@@ -7,7 +7,7 @@ const { isLoggedIn, isPostAuthor, validatePost } = require('../middleware');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
-
+const dayjs = require('dayjs')
 
 router.get('/', catchAsync(async (req, res, next) => {
     res.redirect('posts');
@@ -35,6 +35,7 @@ router.get('/posts/:id', catchAsync(async (req, res, next) => {
     } else {
         res.render('posts/show', { post });
     }
+
 }))
 router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id);
@@ -46,10 +47,12 @@ router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, r
     }
 }))
 router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
-    console.log(req)
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;
+    const currentTime = dayjs().format("HH:mm");
+    const currentDate = dayjs().format("D MMM YY");
+    post.dateCreated = `${currentTime} - ${currentDate}`;
     const user = await User.findById(req.user._id);
     user.posts.push(post._id);
     await post.save();
