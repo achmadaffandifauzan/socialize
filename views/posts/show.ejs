@@ -96,9 +96,7 @@
 <% for (let comment of post.comments) {%>
 <div class="borderRadius overflow-hidden card mb-2 col-sm-8 offset-sm-2">
     <div class="card-header d-flex justify-content-between">
-        <a class="ownerName" href="">
-            <%= comment.author.name %>
-        </a>
+
         <% if(currentUser && comment.author.equals(currentUser._id)) {%>
         <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
             <button class="btn btn-sm btn-danger borderRadius">Delete</button>
@@ -110,6 +108,9 @@
             <%= comment.text %>
         </div>
         <div class=" text-muted fw-light fst-italic text-end font-size-sm small">
+            <a class="ownerName" href="/<%= comment.author._id %>">
+                <%= comment.author.name %>
+            </a>
             <%= comment.dateCreated %>
         </div>
     </div>

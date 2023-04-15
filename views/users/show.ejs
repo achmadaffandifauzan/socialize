@@ -73,7 +73,11 @@
     <ul class="list-group list-group-flush">
       <% for (let friend of user.friends) {%>
       <li class="list-group-item">
-        <a href="/<%= friend._id %> "> <%= friend.name %> </a>
+        <a href="/<%= friend._id %> ">
+          <img src="<%= friend.profilePicture.thumbnail100 %>" class="rounded-circle object-fit-cover me-2" width="70px"
+            height="70px" alt="">
+          <%= friend.name %>
+        </a>
       </li>
       <% } %>
     </ul>

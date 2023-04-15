@@ -8,19 +8,43 @@ const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
 const dayjs = require('dayjs');
+const ExpressError = require('../utils/ExpressError');
 
 router.get('/', catchAsync(async (req, res, next) => {
     res.redirect('posts');
 }))
 router.get('/posts', catchAsync(async (req, res, next) => {
-    let page = parseInt(req.query.page) || 0;
+    let limit = 10;
+    let page = (Math.abs(req.query.page) || 0);
+    const posts = await Post.find({}).limit(limit).skip(limit * page).populate('author');
     // console.log(page)
     let pageBefore = (page == 0) ? 0 : page - 1;
-    let pageAfter = page + 1
-    let limit = 10;
-    let skip = limit * page;
-    const posts = await Post.find({}).limit(limit).skip(skip).populate('author');
+    let pageAfter = page + 1;
     res.render('posts/index', { posts, pageBefore, pageAfter })
+}))
+router.get('/posts/search', catchAsync(async (req, res, next) => {
+    //https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
+    let limit = Math.abs(req.query.limit) || 10;
+    let page = (Math.abs(req.query.page) || 0);
+    if (!req.query.q) {
+        next(new ExpressError('Not Found!', 404));
+    };
+    const posts = await Post.find({
+        $or:
+            [{ "title": { '$regex': req.query.q, $options: 'i' } },
+            { "description": { '$regex': req.query.q, $options: 'i' } },
+            { "hashtag": { '$regex': req.query.q, $options: 'i' } },
+            { "authorName": { '$regex': req.query.q, $options: 'i' } }]
+    }).limit(limit).skip(limit * page).populate('author');
+    const users = await User.find({
+        $or:
+            [{ "username": { '$regex': req.query.q, $options: 'i' } },
+            { "name": { '$regex': req.query.q, $options: 'i' } },]
+    }).limit(limit).skip(limit * page);
+    // console.log(page)
+    let pageBefore = (page == 0) ? 0 : page - 1;
+    let pageAfter = page + 1;
+    res.render('posts/search', { posts, users, pageBefore, pageAfter })
 }))
 router.get('/posts/new', isLoggedIn, (req, res) => {
     res.render('posts/new');
@@ -50,6 +74,7 @@ router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, ca
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;
+    post.authorName = req.user.name;
     const currentTime = dayjs().format("HH:mm");
     const currentDate = dayjs().format("D MMM YY");
     post.dateCreated = `${currentTime} - ${currentDate}`;
@@ -62,10 +87,6 @@ router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, ca
     res.redirect(`/posts/${post._id}`);
 }))
 
-// router.post('/', upload.array('post[image]'), (req, res,) => {
-//     console.log(req.body, req.files);
-//     res.send('it worked')
-// })
 router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findByIdAndUpdate(id, { ...req.body.post });

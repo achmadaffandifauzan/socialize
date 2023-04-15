@@ -28,6 +28,9 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    authorName: {
+        type: String
+    },
     comments: [
         {
             type: Schema.Types.ObjectId,

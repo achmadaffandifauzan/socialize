@@ -28,6 +28,28 @@ main {
   color: white;
 }
 
+.color-socialize,
+.color-socialize:focus,
+.color-socialize:hover {
+  color: #5969F1;
+}
+
+#logoFont {
+  display: flex;
+  font-family: 'Bodoni Moda', serif;
+  width: fit-content;
+  padding: 5px 50px;
+  font-size: 34px;
+  background-color: #5969F1;
+  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  border-radius: 0 0 20px 0;
+  color: white;
+}
+
+#logoFontWhenPhone {
+  display: none;
+}
+
 /* ------- */
 /* NAVBAR */
 /* ------- */
@@ -81,7 +103,13 @@ main {
 #offcanvasNavbar {
   background-color: white;
   border: 0;
+  z-index: 2000;
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+}
+
+#offcanvasNavbarLabel {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 30px;
 }
 
 .offcanvas-body {
@@ -187,10 +215,34 @@ main {
 }
 
 @media (max-width: 600px) {
+  main {
+    margin-top: 50px;
+  }
+
   #navbar {
+    display: flex;
     width: 100%;
-    position: relative !important;
-    background-color: #d6dff4 !important;
+    position: fixed !important;
+    background-color: #5969F1 !important;
+    padding: 10px;
+  }
+
+  #navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #logoFont {
+    display: none;
+  }
+
+  #logoFontWhenPhone {
+    display: flex;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 30px;
+    color: #1D214E;
+    line-height: 5px;
   }
 
   .mainPage {
@@ -198,6 +250,7 @@ main {
   }
 
   .navbar-toggler {
+    display: flex;
     width: 48px;
     height: 32px;
   }
@@ -260,10 +313,80 @@ main {
 /* ------- */
 /* INDEX PAGE */
 /* ------- */
+#searchedDivider {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 5%;
+  margin: 20px 0;
+}
+
+#searchedDivider div {
+  background-color: #9CA6FF;
+  color: white;
+  width: 40%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  border: 4px solid white;
+}
+
+#searchedDivider div:hover {
+  border: 4px solid #5969F1 !important;
+}
+
+.toggledDivider {
+  border: 4px solid #5969F1 !important;
+}
+
+#usersSection {
+  /* postsSection display flex */
+  display: none;
+}
+
 .indexContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.findPostIndexPageForm input {
+  border-radius: 20px;
+  width: 100%;
+  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  color: white;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+}
+
+.findPostIndexPageForm input::placeholder {
+  color: rgba(255, 255, 255, 0.607);
+}
+
+.findPostIndexPageForm input:focus {
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.findPostIndexPageForm button {
+  border-radius: 20px !important;
+  color: #5969F1;
+  border: 3px solid #5969F1;
+  background-color: #5969F1;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.findPostIndexPageForm button:hover {
+  background-color: white;
+  color: #5969F1;
+  border: 3px solid #5969F1;
 }
 
 .cardIndex {
