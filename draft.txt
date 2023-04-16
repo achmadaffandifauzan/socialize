@@ -1,0 +1,3 @@
+- delete user
+- click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything
+- click cancel req friend before refreshing page while other already accept it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything

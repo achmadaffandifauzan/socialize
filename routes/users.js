@@ -123,12 +123,20 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
 
 router.post('/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
-    const user = await User.findById(friendId);
-    user.friendRequests.push(currentId);
-    await user.save()
+    const user = await User.findById(currentId);
+    const user2 = await User.findById(friendId);
+    if (user.friendRequests.includes(user2._id)) {
+        console.log(user.friendRequests)
+        // if one is already send req, another can't
+        req.flash('error', `${user2.name} already in your friend requests`);
+        return res.redirect(`/${currentId}`);
+    };
+    user2.friendRequests.push(currentId);
+    await user2.save()
     res.redirect(`/${friendId}`);
 }))
 router.post('/cancelRequestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+    // (if) case : click cancel req friend before refreshing page while other already accept it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything
     const { currentId, friendId } = req.params;
     await User.findByIdAndUpdate(friendId, { $pull: { friendRequests: currentId } });
     res.redirect(`/${friendId}`);
@@ -136,8 +144,8 @@ router.post('/cancelRequestFriend/:friendId/:currentId', isLoggedIn, catchAsync(
 router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
     const user = await User.findById(currentId);
-    user.friends.push(friendId);
     const user2 = await User.findById(friendId);
+    user.friends.push(friendId);
     user2.friends.push(currentId);
     await User.findByIdAndUpdate(currentId, { $pull: { friendRequests: friendId } });
     await user.save()
@@ -145,6 +153,7 @@ router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, nex
     res.redirect(`/${friendId}`);
 }))
 router.delete('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+    // (if) case : click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything
     const { currentId, friendId } = req.params;
     await User.findByIdAndUpdate(currentId, { $pull: { friends: friendId } });
     await User.findByIdAndUpdate(friendId, { $pull: { friends: currentId } });
