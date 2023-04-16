@@ -10,6 +10,13 @@ const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
 const dayjs = require('dayjs');
 
+// https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+// REMINDER
+// - const user = await User.findByIdAndUpdate() -> user dont store latest date but data in mongodb updated
+// - await User.findByIdAndUpdate() -> data in mongodb updated
+// - const user = await User.findOneAndUpdate(filter,update,{new:true}) -> user store latest data and data in mongodb updated
+// - const user = await User.findOneAndUpdate(filter,update) -> user dont store latest data but data in mongodb updated
+
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
 })
@@ -19,14 +26,17 @@ router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]',
         // const { profilePicture, backgroundPicture } = req.files;
         // console.log(req.files);
         const newUser = new User({ email, username, name });
-
-        newUser.profilePicture = {
-            url: req.files['user[profilePicture]'][0]['path'],
-            filename: req.files['user[profilePicture]'][0]['filename']
+        if (req.files['user[profilePicture]']) {
+            newUser.profilePicture = {
+                url: req.files['user[profilePicture]'][0]['path'],
+                filename: req.files['user[profilePicture]'][0]['filename']
+            }
         };
-        newUser.backgroundPicture = {
-            url: req.files['user[backgroundPicture]'][0]['path'],
-            filename: req.files['user[backgroundPicture]'][0]['filename']
+        if (req.files['user[backgroundPicture]']) {
+            newUser.backgroundPicture = {
+                url: req.files['user[backgroundPicture]'][0]['path'],
+                filename: req.files['user[backgroundPicture]'][0]['filename']
+            }
         };
         const registeredUser = await User.register(newUser, password);
 
@@ -57,6 +67,60 @@ router.post('/login', isGuest, passport.authenticate('local',
         delete req.session.lastPath;
         res.redirect(redirectUrl);
     }));
+
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (!req.user._id.equals(req.params.id)) { // put it on middleware !
+        next(new ExpressError('It is not your account!', 401));
+    }
+    const user = await User.findById(req.params.id);
+    res.render('users/edit', { user });
+}));
+router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), catchAsync(async (req, res, next) => {
+    if (!req.user._id.equals(req.params.id)) { // put it on middleware !
+        next(new ExpressError('It is not your account!', 401));
+    }
+    const user = await User.findOneAndUpdate({ id: req.params._id }, req.body.user, { new: true });
+    if (req.body.user.newpassword) {
+        user.changePassword(req.body.user.password, req.body.user.newpassword,
+            function (err) {
+                if (err) {
+                    next(new ExpressError());
+                }
+            })
+    }
+    if (req.body.deleteProfilePictureFilename) {
+        const picFileName = req.body.deleteProfilePictureFilename;
+        await cloudinary.uploader.destroy(picFileName);
+        await User.updateOne({ id: req.user.id }, { $unset: { 'profilePicture': 1 } });
+    }
+    if (req.body.deleteBackgroundPictureFilename) {
+        const picFileName = req.body.deleteBackgroundPictureFilename;
+        await cloudinary.uploader.destroy(picFileName);
+        await User.updateOne({ id: req.user.id }, { $unset: { 'backgroundPicture': 1 } });
+    }
+
+    if (req.files['user[profilePicture]']) {
+        await cloudinary.uploader.destroy(user.profilePicture.filename);
+        user.profilePicture = {
+            url: req.files['user[profilePicture]'][0]['path'],
+            filename: req.files['user[profilePicture]'][0]['filename']
+        }
+    };
+    if (req.files['user[backgroundPicture]']) {
+        await cloudinary.uploader.destroy(user.profilePicture.filename);
+        user.backgroundPicture = {
+            url: req.files['user[backgroundPicture]'][0]['path'],
+            filename: req.files['user[backgroundPicture]'][0]['filename']
+        }
+    };
+
+
+    user.save();
+    req.flash('success', 'Successfully updated account!')
+    res.redirect(`/${req.params.id}`);
+}))
+
+
 router.post('/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
     const user = await User.findById(friendId);
@@ -82,10 +146,8 @@ router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, nex
 }))
 router.delete('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
-    const user = await User.findByIdAndUpdate(currentId, { $pull: { friends: friendId } });
-    const user2 = await User.findByIdAndUpdate(friendId, { $pull: { friends: currentId } });
-    await user.save()
-    await user2.save()
+    await User.findByIdAndUpdate(currentId, { $pull: { friends: friendId } });
+    await User.findByIdAndUpdate(friendId, { $pull: { friends: currentId } });
     res.redirect(`/${friendId}`);
 }))
 router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {

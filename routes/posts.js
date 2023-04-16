@@ -10,6 +10,16 @@ const upload = multer({ storage });
 const dayjs = require('dayjs');
 const ExpressError = require('../utils/ExpressError');
 
+
+// https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+// REMINDER
+// - const user = await User.findByIdAndUpdate() -> user dont store latest date but data in mongodb updated
+// - await User.findByIdAndUpdate() -> data in mongodb updated
+// - const user = await User.findOneAndUpdate(filter,update,{new:true}) -> user store latest data and data in mongodb updated
+// - const user = await User.findOneAndUpdate(filter,update) -> user dont store latest data but data in mongodb updated
+
+
+
 router.get('/', catchAsync(async (req, res, next) => {
     res.redirect('posts');
 }))
@@ -89,7 +99,7 @@ router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, ca
 
 router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const post = await Post.findByIdAndUpdate(id, { ...req.body.post });
+    const post = await Post.findByOneAndUpdate({ id: id }, { ...req.body.post }, { new: true });
     const imagesArr = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.images.push(...imagesArr);
     if (req.body.deleteImages) {

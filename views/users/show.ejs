@@ -1,8 +1,10 @@
 <% layout('layouts/boilerplate') %>
-<div class="card cardProfileContainer col-sm-8 offset-sm-2 mb-4">
-  <img src="<%=user.backgroundPicture.url%>" class="card-img-top img-fluid profileBgImage" alt="..." />
+<div id="upperPartManagePageContainer" class="card  col-sm-8 offset-sm-2 mb-4">
+  <img src="<%= (user.backgroundPicture) ? user.backgroundPicture.url : "" %>"
+    class="card-img-top img-fluid profileBgImage" alt="Profile Picture" />
   <div class="profileImageWrapper">
-    <img src="<%= user.profilePicture.url %>" class="profileImage img-fluid mx-auto d-block" alt="..." />
+    <img src="<%= (user.backgroundPicture) ? user.profilePicture.url : "" %>"
+      class="profileImage img-fluid mx-auto d-block" alt="Background picture" />
   </div>
   <div class="card-body">
     <h3 class="card-title"><%= user.name %></h3>
@@ -45,69 +47,92 @@
     </div>
   </div>
 </div>
-<div class="col-sm-4 offset-sm-4">
-  <% if (currentUser) { %> <% if (user._id.equals(currentUser._id)) {%>
-  <div class="card m-auto mb-4 cardFriends">
-    <div class="card-header text-center">Friend Requests</div>
-    <% if (user.friendRequests.length){ %>
-    <ul class="list-group list-group-flush">
-      <% for (let fr of user.friendRequests) {%>
-      <li class="list-group-item">
-        <span class="mb-2"> <%= fr.name %> </span>
-        <form action="/<%= fr._id %>/<%= currentUser._id %>" method="POST">
-          <button class="btn btn-sm btn-info">Accept Request</button>
-        </form>
-      </li>
+<div id="bottomPartManagePageContainer">
+  <div id="cardFriendsContainer">
+    <% if (currentUser) { %> <% if (user._id.equals(currentUser._id)) {%>
+    <div class="cardFriends card m-auto mb-4 ">
+      <div class="card-header text-center">Friend Requests</div>
+      <% if (user.friendRequests.length){ %>
+      <ul class="list-group list-group-flush">
+        <% for (let fr of user.friendRequests) {%>
+        <li class="list-group-item">
+          <span class="mb-2"> <%= fr.name %> </span>
+          <form action="/<%= fr._id %>/<%= currentUser._id %>" method="POST">
+            <button class="btn btn-sm btn-info">Accept Request</button>
+          </form>
+        </li>
+        <% } %>
+      </ul>
+      <% } else {%>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">No Friend Request</li>
+      </ul>
       <% } %>
-    </ul>
-    <% } else {%>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">No Friend Request</li>
-    </ul>
-    <% } %>
+    </div>
+    <% }%> <% }%>
+    <div class="cardFriends card m-auto mb-4 ">
+      <div class="card-header text-center">Friends</div>
+      <% if (user.friends.length>0) {%>
+      <ul class="list-group list-group-flush">
+        <% for (let friend of user.friends) {%>
+        <li class="list-group-item">
+          <a href="/<%= friend._id %> ">
+            <img src="<%= friend.profilePicture.thumbnail100 %>" class="rounded-circle object-fit-cover me-2"
+              width="70px" height="70px" alt="">
+            <%= friend.name %>
+          </a>
+        </li>
+        <% } %>
+      </ul>
+      <% } else {%>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">No Friends</li>
+      </ul>
+      <% } %>
+    </div>
   </div>
-  <% }%> <% }%>
-  <div class="card m-auto mb-4 cardFriends">
-    <div class="card-header text-center">Friends</div>
-    <% if (user.friends.length>0) {%>
-    <ul class="list-group list-group-flush">
-      <% for (let friend of user.friends) {%>
-      <li class="list-group-item">
-        <a href="/<%= friend._id %> ">
-          <img src="<%= friend.profilePicture.thumbnail100 %>" class="rounded-circle object-fit-cover me-2" width="70px"
-            height="70px" alt="">
-          <%= friend.name %>
+  <div id="cardUserContainer">
+    <% for (let post of user.posts) {%>
+    <div class="cardUser card mb-4">
+      <div class="card-header">
+        <a href="/<%= user._id %>" class="ownerName"> <%=user.name%> </a>
+      </div>
+      <div class="card-body pb-0">
+        <a href="posts/<%=post._id%>" class="postTitle"> <%=post.title%> </a>
+        <a href="posts/<%=post._id%>" class="postDescription">
+          <p><%= post.description %></p>
         </a>
-      </li>
+        <p class="mb-0">
+          <a href="" class="postHashtag"> <%= post.hashtag %> </a>
+        </p>
+      </div>
+      <% if (post.images.length>= 1){ %>
+      <img src="<%=post.images[0].url%>" class="border border-2 mx-0 my-0 image-post-userShow" alt="..." />
       <% } %>
-    </ul>
-    <% } else {%>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">No Friends</li>
-    </ul>
+      <div class="card-footer text-muted fw-light fst-italic text-end font-size-sm small">
+        <%= post.dateCreated %>
+      </div>
+    </div>
     <% } %>
   </div>
-</div>
-<!-- <div class=""> -->
-<% for (let post of user.posts) {%>
-<div class="cardUser col-sm-6 offset-sm-3 card mb-4">
-  <div class="card-header">
-    <a href="/<%= user._id %>" class="ownerName"> <%=user.name%> </a>
-  </div>
-  <div class="card-body pb-0">
-    <a href="posts/<%=post._id%>" class="postTitle"> <%=post.title%> </a>
-    <a href="posts/<%=post._id%>" class="postDescription">
-      <p><%= post.description %></p>
-    </a>
-    <p class="mb-0">
-      <a href="" class="postHashtag"> <%= post.hashtag %> </a>
-    </p>
-  </div>
-  <% if (post.images.length>= 1){ %>
-  <img src="<%=post.images[0].url%>" class="border border-2 mx-0 my-0 image-post-userShow" alt="..." />
-  <% } %>
-  <div class="card-footer text-muted fw-light fst-italic text-end font-size-sm small">
-    <%= post.dateCreated %>
+  <div id="cardIdentityContainer">
+    <div class="card cardIdentity">
+      <div class="card-header">
+        Accounts
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Email : <span class="color-socialize"><%= user.email %></span></li>
+        <li class="list-group-item">Username : <span class="color-socialize"><%= user.username %></span></li>
+        <% if(currentUser) {%>
+        <% if (currentUser._id.equals(user._id)) {%>
+        <li class="list-group-item"><a href="/<%= user._id %>/edit"
+            class="btn btn-success text-white borderRadius w-100">Edit Account</a>
+        </li>
+        <li class="list-group-item"><a href="" class="btn btn-danger text-white borderRadius w-100">Delete Account</a>
+        </li>
+        <% } %>
+        <% } %>
+      </ul>
+    </div>
   </div>
 </div>
-<% } %>
