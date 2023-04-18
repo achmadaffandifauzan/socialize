@@ -17,6 +17,7 @@ const ExpressError = require('../utils/ExpressError');
 // - await User.findByIdAndUpdate() -> data in mongodb updated
 // - const user = await User.findOneAndUpdate(filter,update,{new:true}) -> user store latest data and data in mongodb updated
 // - const user = await User.findOneAndUpdate(filter,update) -> user dont store latest data but data in mongodb updated
+// - await User.findOneAndUpdate() -> ? (somehow in loop doesn't work, proven in sekawan project -> setWeight router)
 
 
 
@@ -99,7 +100,7 @@ router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, ca
 
 router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const post = await Post.findByOneAndUpdate({ id: id }, { ...req.body.post }, { new: true });
+    const post = await Post.findByOneAndUpdate({ _id: id }, { ...req.body.post }, { new: true });
     const imagesArr = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.images.push(...imagesArr);
     if (req.body.deleteImages) {

@@ -490,8 +490,6 @@ main {
   gap: 2%;
 }
 
-#cardFriendsContainer {}
-
 .cardUser {
   height: fit-content;
   margin: auto;
@@ -582,9 +580,14 @@ main {
 }
 
 
-
-
-
+/* ------- */
+/* CHAT PAGE */
+/* ------- */
+.chatSent,
+.chatRecieved {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 
 

@@ -16,6 +16,7 @@ const dayjs = require('dayjs');
 // - await User.findByIdAndUpdate() -> data in mongodb updated
 // - const user = await User.findOneAndUpdate(filter,update,{new:true}) -> user store latest data and data in mongodb updated
 // - const user = await User.findOneAndUpdate(filter,update) -> user dont store latest data but data in mongodb updated
+// - await User.findOneAndUpdate() -> ? (somehow in loop doesn't work, proven in sekawan project -> setWeight router)
 
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
@@ -79,7 +80,7 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
     if (!req.user._id.equals(req.params.id)) { // put it on middleware !
         next(new ExpressError('It is not your account!', 401));
     }
-    const user = await User.findOneAndUpdate({ id: req.params._id }, req.body.user, { new: true });
+    const user = await User.findOneAndUpdate({ _id: req.params._id }, req.body.user, { new: true });
     if (req.body.user.newpassword) {
         user.changePassword(req.body.user.password, req.body.user.newpassword,
             function (err) {
@@ -91,12 +92,12 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
     if (req.body.deleteProfilePictureFilename) {
         const picFileName = req.body.deleteProfilePictureFilename;
         await cloudinary.uploader.destroy(picFileName);
-        await User.updateOne({ id: req.user.id }, { $unset: { 'profilePicture': 1 } });
+        await User.updateOne({ _id: req.user.id }, { $unset: { 'profilePicture': 1 } });
     }
     if (req.body.deleteBackgroundPictureFilename) {
         const picFileName = req.body.deleteBackgroundPictureFilename;
         await cloudinary.uploader.destroy(picFileName);
-        await User.updateOne({ id: req.user.id }, { $unset: { 'backgroundPicture': 1 } });
+        await User.updateOne({ _id: req.user.id }, { $unset: { 'backgroundPicture': 1 } });
     }
 
     if (req.files['user[profilePicture]']) {

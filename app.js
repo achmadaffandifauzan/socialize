@@ -19,6 +19,7 @@ const User = require('./models/user');
 const userRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
+const chatRoutes = require('./routes/chats')
 
 mongoose.set('strictQuery', true);
 mongoose.connect('mongodb://127.0.0.1:27017/socialize');
@@ -69,6 +70,7 @@ app.use((req, res, next) => {
 app.use('/', postsRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
 app.use('/', userRoutes);
+app.use('/', chatRoutes);
 
 
 app.all('*', (req, res, next) => {
