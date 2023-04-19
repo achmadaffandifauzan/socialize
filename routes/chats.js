@@ -20,6 +20,17 @@ router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res
 
     res.render('users/chat', { sender, receiver, chat });
 }))
+router.get('/chat/:senderId/:receiverId/json', isLoggedIn, catchAsync(async (req, res, next) => {
+    const sender = await User.findById(req.params.senderId);
+    const receiver = await User.findById(req.params.receiverId);
+    if (sender._id.equals(receiver._id)) {
+        req.flash('error', 'Unfortunately, you cannot have a chat with yourself for now.');
+        res.redirect(`/${sender._id}`)
+    };
+    var chat = await Chat.findOne({ authors: { $all: [sender._id, receiver._id] } }).populate('messages');
+
+    res.json({ sender, receiver, chat });
+}))
 router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id)
     const chat = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');

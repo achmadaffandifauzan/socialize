@@ -102,7 +102,6 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
     }
 
     if (req.files['user[profilePicture]']) {
-        console.log(user)
         if (user.profilePicture) {
             // check first in case user dont have any profilepic
             await cloudinary.uploader.destroy(user.profilePicture.filename);
@@ -134,7 +133,6 @@ router.post('/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async 
     const user = await User.findById(currentId);
     const user2 = await User.findById(friendId);
     if (user.friendRequests.includes(user2._id)) {
-        console.log(user.friendRequests)
         // if one is already send req, another can't
         req.flash('error', `${user2.name} already in your friend requests`);
         return res.redirect(`/${currentId}`);

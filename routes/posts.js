@@ -117,7 +117,7 @@ router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), 
 router.delete('/posts/:id', isLoggedIn, isPostAuthor, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findById(id);
-    console.log(post)
+    // console.log(post)
     if (post.images.length > 0) {
         for (let image of post.images) {
             await cloudinary.uploader.destroy(image.filename);

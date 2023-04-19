@@ -18,3 +18,11 @@ if (searchedDivider) {
         document.querySelector('#usersSection').style.display = "flex";
     });
 }
+
+// window.onblur = function () {
+//     alert("goodbye")
+//     // tab is changed
+// };
+// window.onfocus = function () {
+
+// };
