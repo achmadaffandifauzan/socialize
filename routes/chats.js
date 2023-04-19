@@ -20,6 +20,12 @@ router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res
 
     res.render('users/chat', { sender, receiver, chat });
 }))
+router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id)
+    const chat = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');
+
+    res.render('users/inbox', { user, chat });
+}))
 router.post('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res, next) => {
     const sender = await User.findById(req.params.senderId);
     const receiver = await User.findById(req.params.receiverId);

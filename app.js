@@ -21,8 +21,12 @@ const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
 const chatRoutes = require('./routes/chats')
 
+const MongoStore = require('connect-mongo');
+const mongoSanitize = require('express-mongo-sanitize');
+
+const dbUrl = process.env.DB_URL;
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/socialize');
+mongoose.connect(dbUrl);
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connection.once('open', () => {
@@ -38,8 +42,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methorOverride('_method'));
+app.use(mongoSanitize());
 
+const secret = process.env.SECRET || "asecret";
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60 // time period in seconds
+})
+store.on('error', function (e) {
+    console.log("SESSION STORE ERROR : ", e)
+})
 const sessionConfig = {
+    store,
+    name: 'session',
     secret: 'asecret',
     resave: false,
     saveUninitialized: true,
@@ -81,6 +97,5 @@ app.use((err, req, res, next) => {
     if (!err.message) err.message = 'Something Went Wrong!'
     res.status(statusCode).render('error', { err });
 })
-app.listen(3000, () => {
-    console.log("CONNECTED TO PORT 3000 ~express");
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT} ~express`));

@@ -1,0 +1,24 @@
+<% layout('layouts/boilerplate') %>
+<div class="card col-sm-6 offset-sm-3 d-flex flex-column">
+    <div class="card-body">
+        <h4 class="my-4 text-center">Inbox</h4>
+        <div>
+            <% for (let c of chat) {%>
+            <% for (let author of c.authors) {%>
+            <% if (!author._id.equals(currentUser._id)) {%>
+            <div class="d-flex flex-row justify-content-between align-items-center my-3">
+                <a class="text-decoration-none" href="/chat/<%= currentUser._id %>/<%= author._id %>">
+                    <span class="message col-8 text-break">
+                        <img src="<%= author.profilePicture.thumbnail %>" class="rounded-circle object-fit-cover me-2"
+                            width="40px" height="40px" alt="">
+                        <%= author.name %>
+                    </span>
+                </a>
+            </div>
+            <% } %>
+            <% } %>
+            <% } %>
+        </div>
+    </div>
+
+</div>

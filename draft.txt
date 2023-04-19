@@ -1,9 +1,10 @@
 backend :
 - delete user
 - chatting
-- cookie to keep login https://stackoverflow.com/questions/69647869/keep-user-sessions-logged-in-on-node-js-server-restart
+- session, or cookie to keep login https://stackoverflow.com/questions/69647869/keep-user-sessions-logged-in-on-node-js-server-restart
 - last path
 - login from two different places
+- default profile picture
 
 note :
 - click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything

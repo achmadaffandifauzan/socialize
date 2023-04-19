@@ -67,6 +67,17 @@
             </span>
           </a>
         </div>
+        <% if (currentUser) {%>
+        <div class="card cardIdentity my-4">
+          <div class="card-body d-flex justify-content-center">
+            <a href="/<%= currentUser._id %>/chats">
+              <button class="btn btn-socialize">
+                Inbox
+              </button>
+            </a>
+          </div>
+        </div>
+        <% } %>
       </div>
     </div>
   </div>

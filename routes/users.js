@@ -67,6 +67,7 @@ router.post('/login', isGuest, passport.authenticate('local',
         const redirectUrl = req.session.lastPath || '/posts';
         delete req.session.lastPath;
         res.redirect(redirectUrl);
+
     }));
 
 router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -80,7 +81,7 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
     if (!req.user._id.equals(req.params.id)) { // put it on middleware !
         next(new ExpressError('It is not your account!', 401));
     }
-    const user = await User.findOneAndUpdate({ _id: req.params._id }, req.body.user, { new: true });
+    const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body.user, { new: true });
     if (req.body.user.newpassword) {
         user.changePassword(req.body.user.password, req.body.user.newpassword,
             function (err) {
@@ -101,14 +102,20 @@ router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', ma
     }
 
     if (req.files['user[profilePicture]']) {
-        await cloudinary.uploader.destroy(user.profilePicture.filename);
+        console.log(user)
+        if (user.profilePicture) {
+            // check first in case user dont have any profilepic
+            await cloudinary.uploader.destroy(user.profilePicture.filename);
+        }
         user.profilePicture = {
             url: req.files['user[profilePicture]'][0]['path'],
             filename: req.files['user[profilePicture]'][0]['filename']
         }
     };
     if (req.files['user[backgroundPicture]']) {
-        await cloudinary.uploader.destroy(user.profilePicture.filename);
+        if (user.profilePicture) {
+            await cloudinary.uploader.destroy(user.profilePicture.filename);
+        }
         user.backgroundPicture = {
             url: req.files['user[backgroundPicture]'][0]['path'],
             filename: req.files['user[backgroundPicture]'][0]['filename']
