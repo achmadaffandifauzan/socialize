@@ -42,7 +42,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methorOverride('_method'));
-app.use(mongoSanitize());
+mongoSanitize.sanitize({
+    allowDots: true,
+    replaceWith: '_'
+});
 
 const secret = process.env.SECRET || "asecret";
 const store = MongoStore.create({

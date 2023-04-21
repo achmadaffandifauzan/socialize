@@ -1,8 +1,9 @@
-const { postSchema, commentSchema } = require("./joiSchemas");
+const { postSchema, commentSchema, userSchema, messageSchema } = require("./joiSchemas");
 const Post = require('./models/post');
 const Comment = require('./models/comment');
 const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
+const sanitizeHtml = require('sanitize-html');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -58,4 +59,32 @@ module.exports.validateComment = (req, res, next) => {
         next();
     }
 }
-
+module.exports.validateUser = (req, res, next) => {
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+        // mapping error(s) then joining them to single array of single string
+        const messageErr = error.details.map(x => x.message).join(',');
+        throw new ExpressError(messageErr, 400);
+    } else {
+        next();
+    }
+}
+module.exports.validateMessage = (req, res, next) => {
+    const { error } = messageSchema.validate(req.body);
+    if (error) {
+        // mapping error(s) then joining them to single array of single string
+        const messageErr = error.details.map(x => x.message).join(',');
+        throw new ExpressError(messageErr, 400);
+    } else {
+        next();
+    }
+}
+module.exports.reqBodySanitize = (req, res, next) => {
+    for (var key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+            let value = sanitizeHtml(req.body[key])
+            req.body[key] = value;
+        }
+    }
+    next()
+}

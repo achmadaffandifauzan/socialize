@@ -3,10 +3,10 @@ const router = express.Router({ mergeParams: true });
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isCommentAuthor, validateComment } = require('../middleware');
+const { isLoggedIn, isCommentAuthor, validateComment, reqBodySanitize } = require('../middleware');
 const dayjs = require('dayjs');
 
-router.post('/', isLoggedIn, validateComment, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, reqBodySanitize, validateComment, catchAsync(async (req, res, next) => {
     const postDB = await Post.findById(req.params.id);
     const comment = new Comment(req.body.comment);
     comment.author = req.user._id;

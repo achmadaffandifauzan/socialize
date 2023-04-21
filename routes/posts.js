@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Post = require('../models/post');
 const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isPostAuthor, validatePost } = require('../middleware');
+const { isLoggedIn, isPostAuthor, validatePost, reqBodySanitize } = require('../middleware');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
 const upload = multer({ storage });
@@ -81,7 +81,7 @@ router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, r
         res.render('posts/edit', { post });
     }
 }))
-router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+router.post('/posts/', isLoggedIn, reqBodySanitize, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;
@@ -98,7 +98,7 @@ router.post('/posts/', isLoggedIn, upload.array('post[image]'), validatePost, ca
     res.redirect(`/posts/${post._id}`);
 }))
 
-router.put('/posts/:id', isLoggedIn, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+router.put('/posts/:id', isLoggedIn, reqBodySanitize, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findByOneAndUpdate({ _id: id }, { ...req.body.post }, { new: true });
     const imagesArr = req.files.map(file => ({ url: file.path, filename: file.filename }));

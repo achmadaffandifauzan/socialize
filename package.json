@@ -20,7 +20,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^7.1.2",
-    "reinstall-node-modules": "^2.0.0"
+    "reinstall-node-modules": "^2.0.0",
+    "sanitize-html": "^2.10.0"
   },
   "name": "socialize",
   "version": "1.0.0",

@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const passport = require('passport');
 const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isGuest } = require('../middleware');
+const { isLoggedIn, isGuest, validateUser, reqBodySanitize } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary');
@@ -21,7 +21,7 @@ const dayjs = require('dayjs');
 router.get('/register', isGuest, (req, res) => {
     res.render('users/register');
 })
-router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), catchAsync(async (req, res, next) => {
+router.post('/register', isGuest, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
     try {
         const { email, username, name, password } = req.body.user;
         // const { profilePicture, backgroundPicture } = req.files;
@@ -60,7 +60,7 @@ router.post('/register', isGuest, upload.fields([{ name: 'user[profilePicture]',
 router.get('/login', isGuest, (req, res) => {
     res.render('users/login');
 })
-router.post('/login', isGuest, passport.authenticate('local',
+router.post('/login', isGuest, reqBodySanitize, passport.authenticate('local',
     { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }),
     catchAsync(async (req, res, next) => {
         req.flash('success', 'Welcome Back!');
@@ -77,7 +77,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     res.render('users/edit', { user });
 }));
-router.put('/:id', isLoggedIn, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), catchAsync(async (req, res, next) => {
+router.put('/:id', isLoggedIn, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
     if (!req.user._id.equals(req.params.id)) { // put it on middleware !
         next(new ExpressError('It is not your account!', 401));
     }

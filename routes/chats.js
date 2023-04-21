@@ -4,9 +4,8 @@ const User = require('../models/user');
 const Chat = require('../models/chat');
 const Message = require('../models/message');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isCommentAuthor, validateComment } = require('../middleware');
+const { isLoggedIn, validateMessage, reqBodySanitize } = require('../middleware');
 const dayjs = require('dayjs');
-
 
 
 router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -37,7 +36,8 @@ router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
 
     res.render('users/inbox', { user, chat });
 }))
-router.post('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/chat/:senderId/:receiverId', isLoggedIn, reqBodySanitize, validateMessage, catchAsync(async (req, res, next) => {
+
     const sender = await User.findById(req.params.senderId);
     const receiver = await User.findById(req.params.receiverId);
 
