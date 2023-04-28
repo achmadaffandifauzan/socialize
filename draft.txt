@@ -5,6 +5,10 @@ backend :
 - last path
 - login from two different places
 - default profile picture
+- search from navbar
+- post comment (middleware reqbodysanitize)
+- req.body from multipart form did not exist on console.log in middleware, but console.log in main route exist
+
 
 note :
 - click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything

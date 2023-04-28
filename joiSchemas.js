@@ -11,15 +11,13 @@ module.exports.postSchema = Joi.object({
         title: Joi.string().allow(null, ''),
         description: Joi.string().required(),
         hashtag: Joi.string().allow(null, ''),
-        image: Joi.string().allow(null, ''),
+        image: Joi.array().allow(null, ''),
     }).required(),
     deleteImages: Joi.array()
 });
 
 module.exports.commentSchema = Joi.object({
-    comment: Joi.object({
-        text: Joi.string().required()
-    }).required()
+    text: Joi.string().required()
 })
 module.exports.userSchema = Joi.object({
     user: Joi.object({

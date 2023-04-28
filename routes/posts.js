@@ -82,6 +82,7 @@ router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, r
     }
 }))
 router.post('/posts/', isLoggedIn, reqBodySanitize, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
+    console.log(req.body)
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;
@@ -100,7 +101,7 @@ router.post('/posts/', isLoggedIn, reqBodySanitize, upload.array('post[image]'),
 
 router.put('/posts/:id', isLoggedIn, reqBodySanitize, isPostAuthor, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const post = await Post.findByOneAndUpdate({ _id: id }, { ...req.body.post }, { new: true });
+    const post = await Post.findOneAndUpdate({ _id: id }, { ...req.body.post }, { new: true });
     const imagesArr = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.images.push(...imagesArr);
     if (req.body.deleteImages) {

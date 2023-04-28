@@ -80,11 +80,13 @@ module.exports.validateMessage = (req, res, next) => {
     }
 }
 module.exports.reqBodySanitize = (req, res, next) => {
+    console.log(req.body)
     for (var key in req.body) {
         if (req.body.hasOwnProperty(key)) {
             let value = sanitizeHtml(req.body[key])
             req.body[key] = value;
         }
     }
+    console.log(req.body)
     next()
 }

@@ -81,8 +81,7 @@
 <div class="col-sm-8 offset-sm-2 my-3">
     <form action="/posts/<%= post._id %>/comments" method="POST" class="needs-validation" novalidate>
         <label class="form-label" for="commentAdd"> Add Comment</label>
-        <textarea class="form-control borderRadius" name="comment[text]" id="commentAdd" cols="50" rows="2"
-            required></textarea>
+        <textarea class="form-control borderRadius" name="text" id="commentAdd" cols="50" rows="2" required></textarea>
         <div class="invalid-feedback">
             Add something to comment!
         </div>

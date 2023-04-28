@@ -8,7 +8,7 @@ const dayjs = require('dayjs');
 
 router.post('/', isLoggedIn, reqBodySanitize, validateComment, catchAsync(async (req, res, next) => {
     const postDB = await Post.findById(req.params.id);
-    const comment = new Comment(req.body.comment);
+    const comment = new Comment({ text: req.body.text });
     comment.author = req.user._id;
     const currentTime = dayjs().format("HH:mm");
     const currentDate = dayjs().format("D MMM YY");
