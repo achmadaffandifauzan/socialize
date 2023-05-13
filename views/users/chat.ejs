@@ -1,39 +1,37 @@
 <% layout('layouts/boilerplate') %>
-<div class="card col-sm-6 offset-sm-3">
+<div class="card chatboxContainer col-sm-6 offset-sm-3">
 
     <div class="card-header text-white">
         Chat with&nbsp;<a class="text-decoration-none" href="/<%= sender._id %>"><%= sender.name %></a>
     </div>
-    <div class="card-body">
-        <div id="chatContainer">
-            <% if(chat) {%>
-            <% for (let message of chat.messages) {%>
-            <% if (message.author.equals(sender._id)) {%>
-            <div class="chatSent d-flex flex-row justify-content-between align-items-center my-3">
-                <span class="message col-8 text-break">
-                    <img src="<%= sender.profilePicture.thumbnail %>" class="rounded-circle object-fit-cover me-2"
-                        width="40px" height="40px" alt="">
-                    <%= message.message %>
-                </span>
-                <span class="text-muted fw-light small fst-italic"><%= message.dateCreated %>
-                </span>
-            </div>
-            <% } %>
-            <% if (message.author.equals(receiver._id)) {%>
-            <div class="chatRecieved d-flex flex-row justify-content-between align-items-center my-3">
-                <span class="text-muted fw-light small fst-italic"><%= message.dateCreated %>
-                </span>
-                <span class="message col-8 text-end text-break">
-                    <%= message.message %>
-                    <img src="<%= receiver.profilePicture.thumbnail %>" class="rounded-circle object-fit-cover ms-2"
-                        width="40px" height="40px" alt="">
-                </span>
-            </div>
-            <% } %>
-
-            <% } %>
-            <% } %>
+    <div id="chatContainer" class="card-body py-0">
+        <% if(chat) {%>
+        <% for (let message of chat.messages) {%>
+        <% if (message.author.equals(sender._id)) {%>
+        <div class="chatSent d-flex flex-row justify-content-between align-items-center ">
+            <span class="message col-8 text-break">
+                <img src="<%= sender.profilePicture.thumbnail %>" class="rounded-circle object-fit-cover me-2"
+                    width="40px" height="40px" alt="">
+                <%= message.message %>
+            </span>
+            <span class="text-muted fw-light small fst-italic"><%= message.dateCreated %>
+            </span>
         </div>
+        <% } %>
+        <% if (message.author.equals(receiver._id)) {%>
+        <div class="chatRecieved d-flex flex-row justify-content-between align-items-center ">
+            <span class="text-muted fw-light small fst-italic"><%= message.dateCreated %>
+            </span>
+            <span class="message col-8 text-end text-break">
+                <%= message.message %>
+                <img src="<%= receiver.profilePicture.thumbnail %>" class="rounded-circle object-fit-cover ms-2"
+                    width="40px" height="40px" alt="">
+            </span>
+        </div>
+        <% } %>
+
+        <% } %>
+        <% } %>
     </div>
     <form action="/chat/<%= sender._id %>/<%= receiver._id %>" method="POST" class="d-flex">
         <input class="form-control" name="message" type="text">
@@ -41,24 +39,34 @@
     </form>
 </div>
 <script>
+    var scrolled = false;
+    function updateScroll() {
+        if (!scrolled) {
+            var chatContainer = document.getElementById("chatContainer");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+
+    chatContainer.addEventListener("scroll", function () {
+        scrolled = true;
+    })
     // http://localhost:3000/chat/64368511fab9f5acb643de9a/643811ee94cecdb162726400/json
     // add /json to last path, to hit the router
     let url = window.location.href.concat('/json');
-    setInterval(
-        function () {
-            fetch(url, { method: 'GET' })
-                .then(res => { return res.json() })
-                .then(data => {
-                    const chat = data.chat;
-                    const sender = data.sender;
-                    const receiver = data.receiver;
-                    if (chat) {
-                        document.getElementById('chatContainer').innerHTML = '';
-                        for (let message of chat.messages) {
-                            // console.log(sender)
-                            if (message.author == (sender._id)) {
-                                const markup =
-                                    `<div class="chatSent d-flex flex-row justify-content-between align-items-center my-3">
+    (function scrollDown() {
+        fetch(url, { method: 'GET' })
+            .then(res => { return res.json() })
+            .then(data => {
+                const chat = data.chat;
+                const sender = data.sender;
+                const receiver = data.receiver;
+                if (chat) {
+                    document.getElementById('chatContainer').innerHTML = '';
+                    for (let message of chat.messages) {
+                        // console.log(sender)
+                        if (message.author == (sender._id)) {
+                            const markup =
+                                `<div class="chatSent d-flex flex-row justify-content-between align-items-center ">
                 <span class="message col-8 text-break">
                     <img src=" ${sender.profilePicture.url}" class="rounded-circle object-fit-cover me-2"
                         width="40px" height="40px" alt="">
@@ -67,11 +75,11 @@
                 <span class="text-muted fw-light small fst-italic">${message.dateCreated}
                 </span>
             </div>`;
-                                document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
+                            document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
 
-                            } else if (message.author == (receiver._id)) {
-                                const markup =
-                                    `<div class="chatRecieved d-flex flex-row justify-content-between align-items-center my-3">
+                        } else if (message.author == (receiver._id)) {
+                            const markup =
+                                `<div class="chatRecieved d-flex flex-row justify-content-between align-items-center ">
                 <span class="text-muted fw-light small fst-italic">${message.dateCreated}
                 </span>
                 <span class="message col-8 text-end text-break">
@@ -80,14 +88,14 @@
                         width="40px" height="40px" alt="">
                 </span>
             </div>`;
-                                document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
-                            }
-
+                            document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
                         }
                     }
-                })
-        }
-        , 3000)
+                }
+                updateScroll();
+            })
+        setTimeout(scrollDown, 5000);
+    })()
 
 
 

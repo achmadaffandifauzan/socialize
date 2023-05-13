@@ -10,19 +10,19 @@ module.exports.isLoggedIn = (req, res, next) => {
         req.flash('error', "You're not logged in!");
         return res.redirect('/login');
     }
-    next();
+    return next();
 }
 module.exports.isGuest = (req, res, next) => {
     if (req.isAuthenticated()) {
         req.flash('error', "You're still logged in!");
         return res.redirect('/posts');
     }
-    next();
+    return next();
 }
 module.exports.isPostAuthor = catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id)
     if (post.author.equals(req.user._id)) {
-        next();
+        return next();
     } else {
         req.flash('error', "You don't have permission to do that!");
         res.redirect(`/posts/${req.params.id}`)
@@ -32,7 +32,7 @@ module.exports.isCommentAuthor = catchAsync(async (req, res, next) => {
     const { id, commentId } = req.params;
     const comment = await Comment.findById(commentId)
     if (comment.author.equals(req.user._id)) {
-        next();
+        return next();
     } else {
         req.flash('error', "You don't have permission to do that!");
         res.redirect(`/posts/${id}`)
@@ -46,7 +46,7 @@ module.exports.validatePost = (req, res, next) => {
         const messageErr = error.details.map(x => x.message).join(',');
         throw new ExpressError(messageErr, 400);
     } else {
-        next();
+        return next();
     }
 }
 module.exports.validateComment = (req, res, next) => {
@@ -56,7 +56,7 @@ module.exports.validateComment = (req, res, next) => {
         const messageErr = error.details.map(x => x.message).join(',');
         throw new ExpressError(messageErr, 400);
     } else {
-        next();
+        return next();
     }
 }
 module.exports.validateUser = (req, res, next) => {
@@ -66,7 +66,7 @@ module.exports.validateUser = (req, res, next) => {
         const messageErr = error.details.map(x => x.message).join(',');
         throw new ExpressError(messageErr, 400);
     } else {
-        next();
+        return next();
     }
 }
 module.exports.validateMessage = (req, res, next) => {
@@ -76,17 +76,15 @@ module.exports.validateMessage = (req, res, next) => {
         const messageErr = error.details.map(x => x.message).join(',');
         throw new ExpressError(messageErr, 400);
     } else {
-        next();
+        return next();
     }
 }
 module.exports.reqBodySanitize = (req, res, next) => {
-    console.log(req.body)
     for (var key in req.body) {
         if (req.body.hasOwnProperty(key)) {
             let value = sanitizeHtml(req.body[key])
             req.body[key] = value;
         }
     }
-    console.log(req.body)
-    next()
+    return next();
 }
