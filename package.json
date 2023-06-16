@@ -12,6 +12,7 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-session": "^1.17.3",
     "joi": "^17.7.0",
+    "jquery": "^3.7.0",
     "method-override": "^3.0.0",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
@@ -30,7 +31,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "achmadaffandifauzan",
   "license": "ISC",
-  "description": ""
+  "description": "a social media web app"
 }

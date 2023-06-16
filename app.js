@@ -40,6 +40,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methorOverride('_method'));
 mongoSanitize.sanitize({
