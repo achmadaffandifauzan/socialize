@@ -35,6 +35,10 @@ mongoose.connection.once('open', () => {
 
 const app = express();
 
+const server = require('http').createServer(app);
+const io = require("socket.io")(server);
+
+
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -89,8 +93,8 @@ app.use((req, res, next) => {
 
 app.use('/', postsRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
-app.use('/', userRoutes);
 app.use('/', chatRoutes);
+app.use('/', userRoutes);
 
 
 app.all('*', (req, res, next) => {
@@ -102,4 +106,13 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 })
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT} ~express`));
+// app.listen(PORT, () => console.log(`Server running on port ${PORT} ~express`));
+io.on('connection', (socket) => {
+    //    socket.emit('message',(message)=>{
+    //     data
+    //    })
+});
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} ~express and socket io`);
+});
+

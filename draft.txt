@@ -8,7 +8,7 @@ backend :
 - search from navbar
 - post comment (middleware reqbodysanitize)
 
-
+- DO NOT USE /:id/:anotherid directly, ALWAYS USE ex. user/:id/:anotherid
 
 note :
 - click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything

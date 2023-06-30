@@ -176,7 +176,7 @@ router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
         res.redirect('/posts');
     });
 }))
-// dont forget to change to user/:userId/ later
+
 router.get('/:userId/', catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     let user = await User.findById(userId).populate('posts').populate('friendRequests').populate('friends');
