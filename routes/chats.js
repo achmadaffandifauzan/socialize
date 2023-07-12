@@ -1,7 +1,4 @@
 const express = require('express');
-const app = express();
-const server = require('http').createServer(app);
-const io = require("socket.io")(server);
 
 const router = express.Router({ mergeParams: true });
 const User = require('../models/user');
@@ -10,6 +7,7 @@ const Message = require('../models/message');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, validateMessage, reqBodySanitize } = require('../middleware');
 const dayjs = require('dayjs');
+
 
 
 
@@ -29,7 +27,9 @@ router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res
     };
     res.render('users/chat', { sender, receiver, chat });
 }))
-
+router.get('/chat/:chatId/getchat', catchAsync(async (req, res, next) => {
+    res.redirect(`/chat/${req.params.chatId}`);
+}));
 router.get('/chat/:chatId', isLoggedIn, catchAsync(async (req, res, next) => {
     var chat = await Chat.findById(req.params.chatId).populate('messages');
     if (chat) {
@@ -46,6 +46,7 @@ router.get('/chat/:chatId', isLoggedIn, catchAsync(async (req, res, next) => {
     // console.log(chat)
     res.render('users/chat', { sender, receiver, chat });
 }));
+
 router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id)
     const chats = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');
@@ -78,33 +79,7 @@ router.post('/chat/new/:senderId/:receiverId', isLoggedIn, reqBodySanitize, vali
 
     res.redirect(`/chat/${chat._id}`);
 }));
-router.post('/chat/:chatId/:receiverId', isLoggedIn, reqBodySanitize, validateMessage, catchAsync(async (req, res, next) => {
-    const receiver = await User.findById(req.params.receiverId);
-    if (!receiver) {
-        req.flash('error', 'No user found!.');
-        return res.redirect(`/${req.user._id}/chats`);
-    }
-    const currentTime = dayjs().format("HH:mm");
-    const currentDate = dayjs().format("D MMM YY");
-    var chat = await Chat.findById(req.params.chatId);
-    if (!chat) {
-        var chat = new Chat();
-        chat.dateCreated = `${currentTime} - ${currentDate}`;
-        chat.authors.push(req.user._id, req.params.receiverId);
-    }
-    const message = new Message(req.body)
-    message.author = req.user._id;
-    message.acceptor = receiver._id;
-    message.dateCreated = `${currentTime} - ${currentDate}`;
-    await message.save();
 
-
-    chat.messages.push(message._id);
-    chat.dateUpdated = `${currentTime} - ${currentDate}`;
-    await chat.save()
-
-    res.redirect(`/chat/${chat._id}`);
-}));
 
 
 

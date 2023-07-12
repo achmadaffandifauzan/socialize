@@ -37,7 +37,15 @@ const app = express();
 
 const server = require('http').createServer(app);
 const io = require("socket.io")(server);
+io.on('connection', function (socket) {
+    console.log('client connect');
+});
 
+// // Make io accessible to our router
+// app.use(function (req, res, next) {
+//     req.io = io;
+//     next();
+// });
 
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
@@ -90,6 +98,40 @@ app.use((req, res, next) => {
     next();
 })
 
+const Chat = require('./models/chat');
+const Message = require('./models/message');
+const { isLoggedIn, validateMessage, reqBodySanitize } = require('./middleware');
+const dayjs = require('dayjs');
+app.post('/chat/:chatId/:receiverId', isLoggedIn, reqBodySanitize, validateMessage, catchAsync(async (req, res, next) => {
+    const receiver = await User.findById(req.params.receiverId);
+    if (!receiver) {
+        req.flash('error', 'No user found!.');
+        return res.redirect(`/${req.user._id}/chats`);
+    }
+    const currentTime = dayjs().format("HH:mm");
+    const currentDate = dayjs().format("D MMM YY");
+    var chat = await Chat.findById(req.params.chatId);
+    if (!chat) {
+        var chat = new Chat();
+        chat.dateCreated = `${currentTime} - ${currentDate}`;
+        chat.authors.push(req.user._id, req.params.receiverId);
+    }
+    const message = new Message(req.body)
+    message.author = req.user._id;
+    message.acceptor = receiver._id;
+    message.dateCreated = `${currentTime} - ${currentDate}`;
+    await message.save();
+
+    chat.messages.push(message._id);
+    chat.dateUpdated = `${currentTime} - ${currentDate}`;
+    await chat.save()
+
+    const chatId = chat._id;
+
+    io.emit('send-back-message', ({ chatId }))
+
+    res.redirect(`/chat/${chat._id}`);
+}));
 
 app.use('/', postsRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
@@ -107,12 +149,14 @@ app.use((err, req, res, next) => {
 })
 const PORT = process.env.PORT || 3000;
 // app.listen(PORT, () => console.log(`Server running on port ${PORT} ~express`));
-io.on('connection', (socket) => {
-    //    socket.emit('message',(message)=>{
-    //     data
-    //    })
-});
+// io.on('connection', (socket) => {
+//     socket.on('message', (message) => {
+//         console.log(message)
+//     })
+// });
+
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT} ~express and socket io`);
 });
+
 

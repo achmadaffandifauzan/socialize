@@ -3,7 +3,6 @@
     <div class="card-header text-white">
         Chat with&nbsp;<a class="text-decoration-none" href="/<%= receiver._id %>"><%= receiver.name %></a>
     </div>
-
     <% if(chat) {%>
 
     <div id="chatContainer" class="card-body py-0">
@@ -38,7 +37,7 @@
 
     <% } else { %>
 
-    <form action="/chat/new/<%= sender._id %>/<%= receiver._id %>" method="POST" class="d-flex mt-auto">
+    <form action=" /chat/new/<%= sender._id %>/<%= receiver._id %>" method="POST" class="d-flex mt-auto">
         <input class="form-control" name="message" type="text">
         <button class="btn btn-socialize">Send</button>
     </form>
@@ -48,74 +47,18 @@
 </div>
 
 
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
-    var url = window.location.origin;
-    const socket = io(url)
-    socket.on('connection')
-    const sendMessage = (data) => {
-        socket.emit('message', data)
+    var updateScroll = function () {
+        var chatContainer = document.getElementById("chatContainer");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-</script>
-<!-- <script>
-    var scrolled = false;
-    function updateScroll() {
-        if (!scrolled) {
-            var chatContainer = document.getElementById("chatContainer");
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-    }
-
-    chatContainer.addEventListener("scroll", function () {
-        scrolled = true;
+    updateScroll()
+    const socket = io();
+    const url = window.location.href.concat('/getchat');
+    socket.on('connect', () => {
+        socket.on('send-back-message', () => {
+            location.reload();
+        })
     })
-    // http://localhost:3000/chat/64368511fab9f5acb643de9a/643811ee94cecdb162726400/json
-    // add /json to last path, to hit the router
-    var url = window.location.href.concat('/json');
-    (function scrollDown() {
-        fetch(url, { method: 'GET' })
-            .then(res => { return res.json() })
-            .then(data => {
-                const chat = data.chat;
-                const sender = data.sender;
-                const receiver = data.receiver;
-                if (chat) {
-                    document.getElementById('chatContainer').innerHTML = '';
-                    for (let message of chat.messages) {
-                        // console.log(sender)
-                        if (message.author == (sender._id)) {
-                            const markup =
-                                `<div class="chatSent d-flex flex-row justify-content-between align-items-center ">
-                <span class="message col-8 text-break">
-                    <img src=" ${sender.profilePicture.url}" class="rounded-circle object-fit-cover me-2"
-                        width="40px" height="40px" alt="">
-                     ${message.message}
-                </span>
-                <span class="text-muted fw-light small fst-italic">${message.dateCreated}
-                </span>
-            </div>`;
-                            document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
-
-                        } else if (message.author == (receiver._id)) {
-                            const markup =
-                                `<div class="chatRecieved d-flex flex-row justify-content-between align-items-center ">
-                <span class="text-muted fw-light small fst-italic">${message.dateCreated}
-                </span>
-                <span class="message col-8 text-end text-break">
-                    ${message.message}
-                    <img src="${receiver.profilePicture.url}" class="rounded-circle object-fit-cover ms-2"
-                        width="40px" height="40px" alt="">
-                </span>
-            </div>`;
-                            document.getElementById('chatContainer').insertAdjacentHTML("beforeend", markup);
-                        }
-                    }
-                }
-                updateScroll();
-            })
-        setTimeout(scrollDown, 5000);
-    })()
-
-
-
-
-</script> -->
+</script>
