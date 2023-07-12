@@ -37,9 +37,7 @@ const app = express();
 
 const server = require('http').createServer(app);
 const io = require("socket.io")(server);
-io.on('connection', function (socket) {
-    console.log('client connect');
-});
+
 
 // // Make io accessible to our router
 // app.use(function (req, res, next) {
@@ -128,7 +126,7 @@ app.post('/chat/:chatId/:receiverId', isLoggedIn, reqBodySanitize, validateMessa
 
     const chatId = chat._id;
 
-    io.emit('send-back-message', ({ chatId }))
+    io.emit(`room-chatId-${chatId}`, ({ chatId }))
 
     res.redirect(`/chat/${chat._id}`);
 }));

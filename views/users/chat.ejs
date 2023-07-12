@@ -55,9 +55,10 @@
     }
     updateScroll()
     const socket = io();
-    const url = window.location.href.concat('/getchat');
+    const chatId = window.location.pathname.replace('/chat/', '');
+    console.log(chatId)
     socket.on('connect', () => {
-        socket.on('send-back-message', () => {
+        socket.on(`room-chatId-${chatId}`, () => {
             location.reload();
         })
     })
