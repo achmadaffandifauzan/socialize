@@ -92,6 +92,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    res.locals.rootDirname = __dirname;
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -104,9 +105,12 @@ if (process.env.NODE_ENV !== 'production') {
         origin: "http://localhost:3000",
         credentials: true // If you need to pass cookies or authentication headers
     }));
+
+    app.use(express.static(path.join(__dirname, "client-react-chatpage/public")));
+} else {
+    app.use(express.static(path.join(__dirname, 'build')));
 }
 
-app.use(express.static(path.join(__dirname, "client-react-chatpage/public")));
 
 app.get('/api/currentUser', (req, res) => {
     if (!req.isAuthenticated()) {

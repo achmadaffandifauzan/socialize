@@ -16,3 +16,10 @@ note :
 
 ---?????---
 - why does req.body from multipart form did not exist on console.log in middleware, but exist in console.log in main route 
+
+
+with react problems : 
+- if redirect error from new page chat (/senderID/receiverID) to react page chat (chat/chatID), the chat will be created anyway, then if the user hit back and send first message again, it will somehow create another chatID, SO 2 CHAT with the same person
+- home page
+- wrong chatID route (loading screen)
+- DO NOT USE /:id/:anotherid directly, ALWAYS USE ex. user/:id/:anotherid (proven lead to error at some cases)

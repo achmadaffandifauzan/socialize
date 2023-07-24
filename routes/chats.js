@@ -7,6 +7,7 @@ const Message = require('../models/message');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, validateMessage, reqBodySanitize } = require('../middleware');
 const dayjs = require('dayjs');
+const path = require('path');
 
 
 
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
     }));
 } else {
     router.get('/chat/:chatId', isLoggedIn, (req, res) => {
-        res.sendFile(path.join(__dirname, "client-react-chatpage/public/index.html"));
+        res.sendFile(path.join(res.locals.rootDirname, "build", "index.html"));
     });
     router.get('/api/chat/:chatId', catchAsync(async (req, res, next) => {
         try {
