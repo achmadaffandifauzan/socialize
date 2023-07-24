@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socialize</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+
+<body class="d-flex flex-column vh-100">
+  <nav class="fixed-top" id="navbar">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar">
+        <span class="material-symbols-rounded">
+          chevron_right
+        </span>
+      </button>
+      <div id="logoFontWhenPhone"><a class="text-decoration-none text-white" href="/posts">SOCIALIZE</a></div>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+            <a class="text-decoration-none color-socialize" href="/posts">SOCIALIZE</a>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="navbar-nav">
+            <a href="/posts">
+              <div class="nav-item">
+                <span class="material-symbols-rounded">
+                  home
+                </span>
+              </div>
+            </a>
+            <a href="/posts/new">
+              <div class="nav-item">
+                <span class="material-symbols-rounded">
+                  post_add
+                </span>
+              </div>
+            </a>
+            <a href="/logout">
+              <div class="nav-item">
+                <span class="material-symbols-rounded">
+                  logout
+                </span>
+              </div>
+            </a>
+            <a href="/login">
+              <div class="nav-item">
+                <span class="material-symbols-rounded">
+                  login
+                </span>
+              </div>
+            </a>
+          </div>
+          <form class="d-flex findPostNavbarForm" role="search">
+            <input class="form-control me-2" type="search" placeholder="Find posts" aria-label="Search"
+              spellcheck="false">
+            <button class="btn" type="submit">
+              <span class="material-symbols-rounded">
+                search
+              </span>
+            </button>
+          </form>
+          <div class="accountNav">
+            <a href="/">
+              <span class="material-symbols-rounded">
+                person
+              </span>
+              <span>
+                Manage Account
+              </span>
+            </a>
+          </div>
+          <div class="card cardIdentity my-4">
+            <div class="card-body d-flex justify-content-center">
+              <a href="/chats">
+                <button class="btn btn-socialize">
+                  Inbox
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div id="root" class="py-5"></div>
+  <footer class="footer py-2 mt-auto">
+    <div class="container">
+      <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
+        <span class="text-muted">by achmadaffandifauzan : </span>
+        <a href="https://github.com/achmadaffandifauzan" class="mx-2 text-decoration-none" target="_blank">
+          <img width="25px" src="/icons/github.svg" alt="">
+        </a>
+        <a href="https://www.linkedin.com/in/achmad-affandi-fauzan-3458061bb/" class="mx-2 text-decoration-none"
+          target="_blank">
+          <img width="25px" src="/icons/linkedin.svg" alt="">
+        </a>
+        <a href="https://www.instagram.com/achmadaffandifauzan/" class="mx-2 text-decoration-none" target="_blank">
+          <img width="25px" src="/icons/instagram.svg" alt="">
+        </a>
+        <a href="https://twitter.com/aaffandif" class="mx-2 text-decoration-none" target="_blank">
+          <img width="25px" src="/icons/twitter.svg" alt="">
+        </a>
+      </div>
+    </div>
+  </footer>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

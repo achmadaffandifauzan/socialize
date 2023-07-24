@@ -5,16 +5,15 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
-const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const methorOverride = require('method-override');
-const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+const cors = require("cors");
 const User = require('./models/user');
+const { postMessage } = require('./controllers/chat')
 
 const userRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
@@ -32,23 +31,26 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
 mongoose.connection.once('open', () => {
     console.log("Database Connected ~mongoose");
 })
-
+const http = require("http");
+const socketIO = require("socket.io");
 const app = express();
+const server = http.createServer(app);
 
-const server = require('http').createServer(app);
-const io = require("socket.io")(server);
+if (process.env.NODE_ENV !== 'production') {
+    var io = socketIO(server, {
+        cors: {
+            origin: "http://localhost:3000",
+            methods: ["GET", "POST"]
+        }
+    });
+} else {
+    var io = socketIO(server);
+}
 
-
-// // Make io accessible to our router
-// app.use(function (req, res, next) {
-//     req.io = io;
-//     next();
-// });
 
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use(express.urlencoded({ extended: true }));
@@ -96,44 +98,27 @@ app.use((req, res, next) => {
     next();
 })
 
-const Chat = require('./models/chat');
-const Message = require('./models/message');
-const { isLoggedIn, validateMessage, reqBodySanitize } = require('./middleware');
-const dayjs = require('dayjs');
-app.post('/chat/:chatId/:receiverId', isLoggedIn, reqBodySanitize, validateMessage, catchAsync(async (req, res, next) => {
-    const receiver = await User.findById(req.params.receiverId);
-    if (!receiver) {
-        req.flash('error', 'No user found!.');
-        return res.redirect(`/${req.user._id}/chats`);
+if (process.env.NODE_ENV !== 'production') {
+    // Add the cors middleware to allow requests from 'http://localhost:3000'
+    app.use(cors({
+        origin: "http://localhost:3000",
+        credentials: true // If you need to pass cookies or authentication headers
+    }));
+}
+
+app.use(express.static(path.join(__dirname, "client-react-chatpage/public")));
+
+app.get('/api/currentUser', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send({
+            message: 'Not authenticated!'
+        });
     }
-    const currentTime = dayjs().format("HH:mm");
-    const currentDate = dayjs().format("D MMM YY");
-    var chat = await Chat.findById(req.params.chatId);
-    if (!chat) {
-        var chat = new Chat();
-        chat.dateCreated = `${currentTime} - ${currentDate}`;
-        chat.authors.push(req.user._id, req.params.receiverId);
-    }
-    const message = new Message(req.body)
-    message.author = req.user._id;
-    message.acceptor = receiver._id;
-    message.dateCreated = `${currentTime} - ${currentDate}`;
-    await message.save();
-
-    chat.messages.push(message._id);
-    chat.dateUpdated = `${currentTime} - ${currentDate}`;
-    await chat.save()
-
-    const chatId = chat._id;
-
-    io.emit(`room-chatId-${chatId}`, ({ chatId }))
-
-    res.redirect(`/chat/${chat._id}`);
-}));
-
+    res.json({ user: req.user }); // Assuming req.user contains the authenticated user information
+});
+app.use('/', chatRoutes);
 app.use('/', postsRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
-app.use('/', chatRoutes);
 app.use('/', userRoutes);
 
 
@@ -145,16 +130,35 @@ app.use((err, req, res, next) => {
     if (!err.message) err.message = 'Something Went Wrong!'
     res.status(statusCode).render('error', { err });
 })
-const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT} ~express`));
-// io.on('connection', (socket) => {
-//     socket.on('message', (message) => {
-//         console.log(message)
-//     })
-// });
+
+// Socket.io connection event
+io.on("connection", (socket) => {
+    // console.log("A user connected!");
+    // Join a room when a user connects (roomId is passed from client side)
+    socket.on("joinRoom", (roomId) => {
+        socket.join(roomId);
+    });
+
+    // Listen for messages sent by the client
+    socket.on("message", async (message) => {
+        // Save the message to the database or perform any other necessary actions
+        const savedMessage = await postMessage(message);
+        // console.log(savedMessage);
+        // Broadcast the message to all connected clients in the room
+        io.to(message.roomId).emit("message", savedMessage);
+    });
+
+    // When a user disconnects
+    socket.on("disconnect", () => {
+        // console.log("A user disconnected!");
+    });
+});
+
+const PORT = process.env.PORT || 3100;
+
 
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} ~express and socket io`);
+    console.log(`Server running on port ${PORT}`);
 });
 
 

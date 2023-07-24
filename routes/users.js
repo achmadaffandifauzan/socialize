@@ -32,6 +32,7 @@ router.post('/register', isGuest, reqBodySanitize, upload.fields([{ name: 'user[
                 url: req.files['user[profilePicture]'][0]['path'],
                 filename: req.files['user[profilePicture]'][0]['filename']
             }
+            newUser.profilePicture.thumb = newUser.profilePicture.url.replace('/upload', '/upload/w_200');
         };
         if (req.files['user[backgroundPicture]']) {
             newUser.backgroundPicture = {

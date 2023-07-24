@@ -10,6 +10,28 @@ const dayjs = require('dayjs');
 
 
 
+router.get('/chat/:chatId/getchat', catchAsync(async (req, res, next) => {
+    res.redirect(`/chat/${req.params.chatId}`);
+}));
+router.get('/chat/:chatId', catchAsync(async (req, res, next) => {
+    try {
+        const chat = await Chat.findById(req.params.chatId).populate('messages');
+        if (!chat) {
+            throw new Error('Chat not found');
+        }
+        if (!chat.authors.includes(req.user._id)) {
+            throw new Error('Unfortunately, you have no access to do that.');
+        }
+        const sender = await User.findById(req.user._id);
+        const receiver = await User.findById(chat.authors[chat.authors.findIndex(author => {
+            return !author.equals(sender._id);
+        })]);
+        res.json({ sender, receiver, chat });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}));
+
 
 // if chat doesnt exist, then user would have to hit this route, instead of /chat/:chatId route 
 // this route is from client side : user profile page (chat with ... button))
@@ -27,33 +49,6 @@ router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res
     };
     res.render('users/chat', { sender, receiver, chat });
 }))
-router.get('/chat/:chatId/getchat', catchAsync(async (req, res, next) => {
-    res.redirect(`/chat/${req.params.chatId}`);
-}));
-router.get('/chat/:chatId', isLoggedIn, catchAsync(async (req, res, next) => {
-    var chat = await Chat.findById(req.params.chatId).populate('messages');
-    if (chat) {
-        if (chat.authors.includes(req.user._id) == false) {
-            req.flash('error', 'Unfortunately, you have no access to do that.');
-            return res.redirect(`/${req.user._id}/chats`);
-        };
-        var sender = await User.findById(req.user._id);
-        var receiver = await User.findById(chat.authors[chat.authors.findIndex(author => {
-            return !author.equals(sender._id);
-        })]);
-        // console.log(sender, receiver)
-    }
-    // console.log(chat)
-    res.render('users/chat', { sender, receiver, chat });
-}));
-
-router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
-    const user = await User.findById(req.params.id)
-    const chats = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');
-
-    res.render('users/inbox', { user, chats });
-}))
-
 // different post form if the chat does not exist (logic done in client side chat page)
 router.post('/chat/new/:senderId/:receiverId', isLoggedIn, reqBodySanitize, validateMessage, catchAsync(async (req, res, next) => {
     const sender = await User.findById(req.params.senderId);
@@ -80,7 +75,12 @@ router.post('/chat/new/:senderId/:receiverId', isLoggedIn, reqBodySanitize, vali
     res.redirect(`/chat/${chat._id}`);
 }));
 
+router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id)
+    const chats = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');
 
+    res.render('users/inbox', { user, chats });
+}))
 
 
 
