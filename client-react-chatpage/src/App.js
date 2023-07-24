@@ -5,8 +5,11 @@ import axios from 'axios';
 const App = () => {
   const [apiData, setApiData] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const baseURL = process.env.NODE_ENV === 'production'
+    ? window.location.origin// Use the current origin in production
+    : 'http://localhost:3100'; // Use localhost in development
   const api = axios.create({
-    baseURL: 'http://localhost:3100', // Your backend URL
+    baseURL: baseURL, // Your backend URL
     withCredentials: true, // Include credentials (session cookie)
   });
   useEffect(() => {
@@ -23,7 +26,11 @@ const App = () => {
     fetchCurrentUser();
     const fetchChatData = async () => {
       try {
-        const response = await api.get(window.location.pathname);
+        var response = process.env.NODE_ENV === 'production'
+          ? await api.get(`/api${window.location.pathname}`)// Use the current origin in production
+          : await api.get(window.location.pathname);; // Use localhost in development
+
+        // console.log(`/api${window.location.pathname}`)
         // console.log("RES IS :::::::::::::::::::::::", response.data)
         setApiData(response.data);
       } catch (error) {

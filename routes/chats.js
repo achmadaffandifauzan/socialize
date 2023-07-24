@@ -13,24 +13,49 @@ const dayjs = require('dayjs');
 router.get('/chat/:chatId/getchat', catchAsync(async (req, res, next) => {
     res.redirect(`/chat/${req.params.chatId}`);
 }));
-router.get('/chat/:chatId', catchAsync(async (req, res, next) => {
-    try {
-        const chat = await Chat.findById(req.params.chatId).populate('messages');
-        if (!chat) {
-            throw new Error('Chat not found');
+if (process.env.NODE_ENV !== 'production') {
+    router.get('/chat/:chatId', catchAsync(async (req, res, next) => {
+        try {
+            const chat = await Chat.findById(req.params.chatId).populate('messages');
+            if (!chat) {
+                throw new Error('Chat not found');
+            }
+            if (!chat.authors.includes(req.user._id)) {
+                throw new Error('Unfortunately, you have no access to do that.');
+            }
+            const sender = await User.findById(req.user._id);
+            const receiver = await User.findById(chat.authors[chat.authors.findIndex(author => {
+                return !author.equals(sender._id);
+            })]);
+            res.json({ sender, receiver, chat });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
         }
-        if (!chat.authors.includes(req.user._id)) {
-            throw new Error('Unfortunately, you have no access to do that.');
+    }));
+} else {
+    router.get('/chat/:chatId', isLoggedIn, (req, res) => {
+        res.sendFile(path.join(__dirname, "client-react-chatpage/public/index.html"));
+    });
+    router.get('/api/chat/:chatId', catchAsync(async (req, res, next) => {
+        try {
+            const chat = await Chat.findById(req.params.chatId).populate('messages');
+            if (!chat) {
+                throw new Error('Chat not found');
+            }
+            if (!chat.authors.includes(req.user._id)) {
+                throw new Error('Unfortunately, you have no access to do that.');
+            }
+            const sender = await User.findById(req.user._id);
+            const receiver = await User.findById(chat.authors[chat.authors.findIndex(author => {
+                return !author.equals(sender._id);
+            })]);
+            res.json({ sender, receiver, chat });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
         }
-        const sender = await User.findById(req.user._id);
-        const receiver = await User.findById(chat.authors[chat.authors.findIndex(author => {
-            return !author.equals(sender._id);
-        })]);
-        res.json({ sender, receiver, chat });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}));
+    }));
+}
+
 
 
 // if chat doesnt exist, then user would have to hit this route, instead of /chat/:chatId route 
@@ -44,7 +69,7 @@ router.get('/chat/:senderId/:receiverId', isLoggedIn, catchAsync(async (req, res
     const sender = await User.findById(req.params.senderId);
     const receiver = await User.findById(req.params.receiverId);
     if (sender._id.equals(receiver._id)) {
-        req.flash('error', 'Unfortunately, you cannot have a chat with yourself for now.');
+        req.flash('error', 'Unfortunately, you cannot have a chat with yourself.');
         return res.redirect(`/${sender._id}`)
     };
     res.render('users/chat', { sender, receiver, chat });
