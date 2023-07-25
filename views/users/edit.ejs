@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 <div class="col-sm-6 offset-sm-3 text-center formContainer my-5">
     <h2 class="my-4">Edit Account</h2>
-    <form action="/<%= user._id %>/?_method=PUT" method="POST" class="needs-validation formAuth"
+    <form action="/users/<%= user._id %>/?_method=PUT" method="POST" class="needs-validation formAuth"
         enctype='multipart/form-data' novalidate>
         <div class="form-group mb-3">
             <label for="name" class="my-2">Name</label>
@@ -77,6 +77,6 @@
         <button class="btn btn-success">
             Update
         </button>
-        <div class="mt-3">Cancel Update ? <a href="/<%=user._id  %>">Back to Your Account Page</a></div>
+        <div class="mt-3">Cancel Update ? <a href="/users/<%=user._id  %>">Back to Your Account Page</a></div>
     </form>
 </div>

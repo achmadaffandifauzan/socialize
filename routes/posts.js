@@ -82,7 +82,7 @@ router.get('/posts/:id/edit', isLoggedIn, isPostAuthor, catchAsync(async (req, r
     }
 }))
 router.post('/posts/', isLoggedIn, reqBodySanitize, upload.array('post[image]'), validatePost, catchAsync(async (req, res, next) => {
-    console.log(req.body)
+    // console.log(req.body)
     const post = new Post(req.body.post);
     post.images = req.files.map(file => ({ url: file.path, filename: file.filename }));
     post.author = req.user._id;

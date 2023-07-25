@@ -112,7 +112,7 @@ const ChatPage = ({ apiData, currentUser }) => {
         <div className="card chatboxContainer col-sm-6 offset-sm-3">
             <div className="card-header text-white">
                 Chat with&nbsp;
-                <a href={`/${apiData.receiver._id}`} className="text-decoration-none">
+                <a href={`/users/${apiData.receiver._id}`} className="text-decoration-none">
                     {apiData.receiver.name}
                 </a>
             </div>

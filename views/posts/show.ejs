@@ -4,7 +4,7 @@
 <% layout('layouts/boilerplate') %>
 <div class="cardShow col-sm-8 offset-sm-2 card mt-0">
     <div id="cardShowHeader" class="card-header">
-        <a class="ownerName" href="/<%= post.author._id %>">
+        <a class="ownerName" href="/users/<%= post.author._id %>">
             <%= post.author.name %>
         </a>
         <% if(currentUser && post.author.equals(currentUser._id)) {%>
@@ -107,7 +107,7 @@
             <%= comment.text %>
         </div>
         <div class=" text-muted fw-light fst-italic text-end font-size-sm small">
-            <a class="ownerName" href="/<%= comment.author._id %>">
+            <a class="ownerName" href="/users/<%= comment.author._id %>">
                 <%= comment.author.name %>
             </a>
             <%= comment.dateCreated %>

@@ -98,7 +98,10 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
-
+app.get('/', (req, res) => {
+    console.log("AAA")
+    res.redirect('/posts');
+});
 if (process.env.NODE_ENV !== 'production') {
     // Add the cors middleware to allow requests from 'http://localhost:3000'
     app.use(cors({

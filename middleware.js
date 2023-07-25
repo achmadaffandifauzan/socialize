@@ -8,7 +8,7 @@ const sanitizeHtml = require('sanitize-html');
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.flash('error', "You're not logged in!");
-        return res.redirect('/login');
+        return res.redirect('/users/login');
     }
     return next();
 }

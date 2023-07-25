@@ -18,10 +18,10 @@ const dayjs = require('dayjs');
 // - const user = await User.findOneAndUpdate(filter,update) -> user dont store latest data but data in mongodb updated
 // - await User.findOneAndUpdate() -> ? (somehow in loop doesn't work, proven in sekawan project -> setWeight router)
 
-router.get('/register', isGuest, (req, res) => {
+router.get('/users/register', isGuest, (req, res) => {
     res.render('users/register');
 })
-router.post('/register', isGuest, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
+router.post('/users/register', isGuest, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
     try {
         const { email, username, name, password } = req.body.user;
         // const { profilePicture, backgroundPicture } = req.files;
@@ -55,14 +55,14 @@ router.post('/register', isGuest, reqBodySanitize, upload.fields([{ name: 'user[
 
     } catch (error) {
         req.flash('error', error.message);
-        res.redirect('/register');
+        res.redirect('/users/register');
     }
 }));
-router.get('/login', isGuest, (req, res) => {
+router.get('/users/login', isGuest, (req, res) => {
     res.render('users/login');
 })
-router.post('/login', isGuest, reqBodySanitize, passport.authenticate('local',
-    { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }),
+router.post('/users/login', isGuest, reqBodySanitize, passport.authenticate('local',
+    { failureFlash: true, failureRedirect: '/users/login', keepSessionInfo: true }),
     catchAsync(async (req, res, next) => {
         req.flash('success', 'Welcome Back!');
         const redirectUrl = req.session.lastPath || '/posts';
@@ -71,14 +71,14 @@ router.post('/login', isGuest, reqBodySanitize, passport.authenticate('local',
 
     }));
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/users/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
     if (!req.user._id.equals(req.params.id)) { // put it on middleware !
         next(new ExpressError('It is not your account!', 401));
     }
     const user = await User.findById(req.params.id);
     res.render('users/edit', { user });
 }));
-router.put('/:id', isLoggedIn, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
+router.put('/users/:id', isLoggedIn, reqBodySanitize, upload.fields([{ name: 'user[profilePicture]', maxCount: 1 }, { name: 'user[backgroundPicture]', maxCount: 1 }]), validateUser, catchAsync(async (req, res, next) => {
     if (!req.user._id.equals(req.params.id)) { // put it on middleware !
         next(new ExpressError('It is not your account!', 401));
     }
@@ -125,30 +125,30 @@ router.put('/:id', isLoggedIn, reqBodySanitize, upload.fields([{ name: 'user[pro
 
     user.save();
     req.flash('success', 'Successfully updated account!')
-    res.redirect(`/${req.params.id}`);
+    res.redirect(`/users/${req.params.id}`);
 }))
 
 
-router.post('/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/users/requestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
     const user = await User.findById(currentId);
     const user2 = await User.findById(friendId);
     if (user.friendRequests.includes(user2._id)) {
         // if one is already send req, another can't
         req.flash('error', `${user2.name} already in your friend requests`);
-        return res.redirect(`/${currentId}`);
+        return res.redirect(`/users/${currentId}`);
     };
     user2.friendRequests.push(currentId);
     await user2.save()
-    res.redirect(`/${friendId}`);
+    res.redirect(`/users/${friendId}`);
 }))
-router.post('/cancelRequestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/users/cancelRequestFriend/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     // (if) case : click cancel req friend before refreshing page while other already accept it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything
     const { currentId, friendId } = req.params;
     await User.findByIdAndUpdate(friendId, { $pull: { friendRequests: currentId } });
-    res.redirect(`/${friendId}`);
+    res.redirect(`/users/${friendId}`);
 }))
-router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/users/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     const { currentId, friendId } = req.params;
     const user = await User.findById(currentId);
     const user2 = await User.findById(friendId);
@@ -157,16 +157,16 @@ router.post('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, nex
     await User.findByIdAndUpdate(currentId, { $pull: { friendRequests: friendId } });
     await user.save()
     await user2.save()
-    res.redirect(`/${friendId}`);
+    res.redirect(`/users/${friendId}`);
 }))
-router.delete('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.delete('/users/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
     // (if) case : click delete friend before refreshing page while other already deleted it -> won't error because findByIdAndUpdate wont error if $pull doesn't find anything
     const { currentId, friendId } = req.params;
     await User.findByIdAndUpdate(currentId, { $pull: { friends: friendId } });
     await User.findByIdAndUpdate(friendId, { $pull: { friends: currentId } });
-    res.redirect(`/${friendId}`);
+    res.redirect(`/users/${friendId}`);
 }))
-router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/users/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
     req.logout(async (error) => {
         if (error) return next(error)
         const currentTime = dayjs().format("HH:mm");
@@ -178,7 +178,7 @@ router.get('/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
     });
 }))
 
-router.get('/:userId/', catchAsync(async (req, res, next) => {
+router.get('/users/:userId/', catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     let user = await User.findById(userId).populate('posts').populate('friendRequests').populate('friends');
     const currentUser = req.user;
@@ -194,7 +194,7 @@ router.get('/:userId/', catchAsync(async (req, res, next) => {
         res.render('users/show', { user })
     }
 }))
-// router.get('/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
+// router.get('/users/:friendId/:currentId', isLoggedIn, catchAsync(async (req, res, next) => {
 //     const { currentId, friendId } = req.params;
 //     const user = await User.findById(friendId).populate('posts');
 //     const currentUser = await User.findById(currentId);

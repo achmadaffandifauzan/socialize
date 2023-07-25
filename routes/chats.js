@@ -101,7 +101,7 @@ router.post('/chat/new/:senderId/:receiverId', isLoggedIn, reqBodySanitize, vali
     res.redirect(`/chat/${chat._id}`);
 }));
 
-router.get('/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/users/:id/chats', isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id)
     const chats = await Chat.find({ authors: { $all: [user._id] } }).populate('authors').populate('messages');
 

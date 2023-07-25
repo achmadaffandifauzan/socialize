@@ -27,7 +27,7 @@
     <% for (let post of posts) {%>
     <div class="cardIndex col-sm-5 card my-4">
         <div class="card-header">
-            <a href="/<%= post.author._id %>" class="ownerName">
+            <a href="/users/<%= post.author._id %>" class="ownerName">
                 <%=post.author.name%>
             </a>
         </div>
@@ -68,7 +68,7 @@
         <ul class="list-group list-group-flush">
             <% for (let user of users) {%>
             <li class="list-group-item">
-                <a href="/<%= user._id %> ">
+                <a href="/users/<%= user._id %> ">
                     <img src="<%= user.profilePicture.thumbnail100 %>" class="rounded-circle object-fit-cover me-2"
                         width="70px" height="70px" alt="">
                     <%= user.name %>
