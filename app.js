@@ -99,7 +99,6 @@ app.use((req, res, next) => {
     next();
 })
 app.get('/', (req, res) => {
-    console.log("AAA")
     res.redirect('/posts');
 });
 if (process.env.NODE_ENV !== 'production') {

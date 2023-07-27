@@ -166,13 +166,13 @@ router.delete('/users/:friendId/:currentId', isLoggedIn, catchAsync(async (req, 
     await User.findByIdAndUpdate(friendId, { $pull: { friends: currentId } });
     res.redirect(`/users/${friendId}`);
 }))
-router.get('/users/logout/:userId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/users/logout', isLoggedIn, catchAsync(async (req, res, next) => {
+    const currentTime = dayjs().format("HH:mm");
+    const currentDate = dayjs().format("D MMM YY");
+    await User.findByIdAndUpdate(req.user._id,
+        { lastOnline: `${currentTime} - ${currentDate}` });
     req.logout(async (error) => {
         if (error) return next(error)
-        const currentTime = dayjs().format("HH:mm");
-        const currentDate = dayjs().format("D MMM YY");
-        await User.findByIdAndUpdate(req.params.userId,
-            { lastOnline: `${currentTime} - ${currentDate}` });
         req.flash('success', "You're Logged Out!");
         res.redirect('/posts');
     });

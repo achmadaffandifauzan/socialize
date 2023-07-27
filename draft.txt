@@ -19,3 +19,4 @@ note :
 with react problems : 
 - if redirect error from new page chat (/senderID/receiverID) to react page chat (chat/chatID), the chat will be created anyway, then if the user hit back and send first message again, it will somehow create another chatID, SO 2 CHAT with the same person
 - wrong chatID route (loading screen)
+- if send multiple messages at almost the same time (and if lag), saved message might not be in order
