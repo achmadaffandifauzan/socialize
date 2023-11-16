@@ -1,92 +1,95 @@
 <% layout('layouts/boilerplate') %>
 
-<form action="/posts/search" method="GET" class="d-flex findPostIndexPageForm" role="search">
-    <input class="form-control me-2" name="q" type="search" placeholder="Find posts, hashtag, or user"
-        aria-label="Search" spellcheck="false">
-    <button class="btn" type="submit">
-        <span class="material-symbols-rounded">
-            search
-        </span>
-    </button>
+<form
+  action="/posts/search"
+  method="GET"
+  class="d-flex findPostIndexPageForm"
+  role="search"
+>
+  <input
+    class="form-control me-2"
+    name="q"
+    type="search"
+    placeholder="Find posts, hashtag, or user"
+    aria-label="Search"
+    spellcheck="false"
+  />
+  <button class="btn" type="submit">
+    <img src="/icons/search.svg" alt="" />
+  </button>
 </form>
 <div id="searchedDivider">
-    <div id="postsDivider" class="btn toggledDivider">
-        Posts
-    </div>
-    <div id="usersDivider" class="btn">
-        Users
-    </div>
+  <div id="postsDivider" class="btn toggledDivider">Posts</div>
+  <div id="usersDivider" class="btn">Users</div>
 </div>
 
 <div class="indexContainer" id="postsSection">
-    <% if (posts.length<1) {%>
-    <div class="text-danger">
-        No posts found!
+  <% if (posts.length<1) {%>
+  <div class="text-danger">No posts found!</div>
+  <% } else {%> <% for (let post of posts) {%>
+  <div class="cardIndex col-sm-5 card my-4">
+    <div class="card-header">
+      <a href="/users/<%= post.author._id %>" class="ownerName">
+        <%=post.author.name%>
+      </a>
     </div>
-    <% } else {%>
-    <% for (let post of posts) {%>
-    <div class="cardIndex col-sm-5 card my-4">
-        <div class="card-header">
-            <a href="/users/<%= post.author._id %>" class="ownerName">
-                <%=post.author.name%>
-            </a>
-        </div>
-        <a href="/posts/<%=post._id%>" class="text-decoration-none">
-            <div class="card-body pb-1">
-                <div class="postTitle">
-                    <%=post.title%>
-                </div>
-                <div class="postDescription">
-                    <%= post.description %>
-                </div>
-            </div>
-        </a>
-        <div class="mb-0 card-body">
-            <a href="" class="postHashtag">
-                <%= post.hashtag %>
-            </a>
-        </div>
-        <% if (post.images.length>= 1){ %>
-        <img src="<%=post.images[0].url%>" class="image-post-index mx-3 my-0" alt="...">
-        <% } %>
-        <div class="card-footer text-muted fw-light fst-italic text-end font-size-sm small">
-            <%= post.dateCreated %>
-        </div>
+    <a href="/posts/<%=post._id%>" class="text-decoration-none">
+      <div class="card-body pb-1">
+        <div class="postTitle"><%=post.title%></div>
+        <div class="postDescription"><%= post.description %></div>
+      </div>
+    </a>
+    <div class="mb-0 card-body">
+      <a href="" class="postHashtag"> <%= post.hashtag %> </a>
     </div>
+    <% if (post.images.length>= 1){ %>
+    <img
+      src="<%=post.images[0].url%>"
+      class="image-post-index mx-3 my-0"
+      alt="..."
+    />
     <% } %>
-    <% } %>
-
+    <div
+      class="card-footer text-muted fw-light fst-italic text-end font-size-sm small"
+    >
+      <%= post.dateCreated %>
+    </div>
+  </div>
+  <% } %> <% } %>
 </div>
 <div class="indexContainer" id="usersSection">
-    <% if (users.length<1) {%>
-    <div class="text-danger">
-        No users found!
-    </div>
-    <% } else {%>
-    <div class="card m-auto mb-4 cardFriends col-sm-8 offset-sm-4">
-        <div class="card-header text-center">Found Users</div>
-        <ul class="list-group list-group-flush">
-            <% for (let user of users) {%>
-            <li class="list-group-item">
-                <a href="/users/<%= user._id %> ">
-                    <img src="<%= user.profilePicture.thumbnail100 %>" class="rounded-circle object-fit-cover me-2"
-                        width="70px" height="70px" alt="">
-                    <%= user.name %>
-                </a>
-            </li>
-            <% } %>
-        </ul>
-    </div>
-    <% } %>
+  <% if (users.length<1) {%>
+  <div class="text-danger">No users found!</div>
+  <% } else {%>
+  <div class="card m-auto mb-4 cardFriends col-sm-8 offset-sm-4">
+    <div class="card-header text-center">Found Users</div>
+    <ul class="list-group list-group-flush">
+      <% for (let user of users) {%>
+      <li class="list-group-item">
+        <a href="/users/<%= user._id %> ">
+          <img
+            src="<%= user.profilePicture.thumbnail100 %>"
+            class="rounded-circle object-fit-cover me-2"
+            width="70px"
+            height="70px"
+            alt=""
+          />
+          <%= user.name %>
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+  <% } %>
 </div>
 <!-- <nav class="" aria-label="..."> -->
 <!-- need fix : https://stackoverflow.com/questions/6899097/how-to-add-a-parameter-to-the-url -->
 <ul class="pagination my-3 justify-content-center">
-    <li class="page-item">
-        <a class="page-link" href="?page=<%= pageBefore %>">&laquo; Previous</a>
-    </li>
-    <li class="page-item">
-        <a class="page-link" href="?page=<%= pageAfter%>">Next &raquo;</a>
-    </li>
+  <li class="page-item">
+    <a class="page-link" href="?page=<%= pageBefore %>">&laquo; Previous</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="?page=<%= pageAfter%>">Next &raquo;</a>
+  </li>
 </ul>
 <!-- </nav> -->

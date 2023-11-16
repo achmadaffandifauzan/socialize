@@ -2,9 +2,7 @@
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
       aria-controls="offcanvasNavbar">
-      <span class="material-symbols-rounded">
-        chevron_right
-      </span>
+      <img class="materialIcon" src="/icons/chevron_right.svg" alt="">
     </button>
     <div id="logoFontWhenPhone"><a class="text-decoration-none text-white" href="/posts">SOCIALIZE</a></div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -18,32 +16,24 @@
         <div class="navbar-nav">
           <a href="/posts">
             <div class="nav-item">
-              <span class="material-symbols-rounded">
-                home
-              </span>
+              <img class="materialIcon" src="/icons/home.svg" alt="">
             </div>
           </a>
           <a href="/posts/new">
             <div class="nav-item">
-              <span class="material-symbols-rounded">
-                post_add
-              </span>
+              <img class="materialIcon" src="/icons/post_add.svg" alt="">
             </div>
           </a>
           <% if(currentUser) {%>
           <a href="/users/logout">
             <div class="nav-item">
-              <span class="material-symbols-rounded">
-                logout
-              </span>
+              <img class="materialIcon" src="/icons/logout.svg" alt="">
             </div>
           </a>
           <% } else { %>
           <a href="/users/login">
             <div class="nav-item">
-              <span class="material-symbols-rounded">
-                login
-              </span>
+              <img class="materialIcon" src="/icons/login.svg" alt="">
             </div>
           </a>
           <% } %>
@@ -52,16 +42,12 @@
           <input class="form-control me-2" type="search" placeholder="Find posts" aria-label="Search"
             spellcheck="false">
           <button class="btn" type="submit">
-            <span class="material-symbols-rounded">
-              search
-            </span>
+            <img src="/icons/search-dark.svg" alt="">
           </button>
         </form>
         <div class="accountNav">
           <a href="/users/<%= (currentUser)?currentUser._id : "login" %> ">
-            <span class="material-symbols-rounded">
-              person
-            </span>
+            <img src="/icons/person.svg" style="width: 38px;" alt="">
             <span>
               Manage Account
             </span>

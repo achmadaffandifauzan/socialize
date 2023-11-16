@@ -1,5 +1,5 @@
 body {
-  font-family: 'Varela Round', sans-serif;
+  font-family: "Varela Round", sans-serif;
   /* transition: 0.3s; */
 }
 
@@ -12,36 +12,36 @@ main {
 }
 
 .btn-socialize {
-  background-color: #5969F1;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  background-color: #5969f1;
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
   color: white;
   border: 2px solid white;
 }
 
 .btn-socialize:hover {
   color: white;
-  border: 2px solid #9CA6FF;
+  border: 2px solid #9ca6ff;
 }
 
 .btn-socialize:focus {
-  border: 2px solid #9CA6FF;
+  border: 2px solid #9ca6ff;
   color: white;
 }
 
 .color-socialize,
 .color-socialize:focus,
 .color-socialize:hover {
-  color: #5969F1;
+  color: #5969f1;
 }
 
 #logoFont {
   display: flex;
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   width: fit-content;
   padding: 5px 50px;
   font-size: 34px;
-  background-color: #5969F1;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  background-color: #5969f1;
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
   border-radius: 0 0 20px 0;
   color: white;
 }
@@ -62,14 +62,13 @@ main {
   float: right;
   right: 0 !important;
   left: auto !important;
-
 }
 
 .navbar-toggler {
   border: 0;
   background-color: white;
-  border: 4px solid #5969F1;
-  color: #5969F1;
+  border: 4px solid #5969f1;
+  color: #5969f1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,19 +80,11 @@ main {
 
 .navbar-toggler:focus {
   background-color: white;
-  color: #5969F1;
-}
-
-.navbar-toggler .material-symbols-rounded {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 600,
-    'GRAD' 0,
-    'opsz' 48
+  color: #5969f1;
 }
 
 .offcanvas-header {
-  color: #5969F1;
+  color: #5969f1;
 }
 
 .offcanvas-backdrop.show {
@@ -108,7 +99,7 @@ main {
 }
 
 #offcanvasNavbarLabel {
-  font-family: 'Bodoni Moda', serif;
+  font-family: "Bodoni Moda", serif;
   font-size: 30px;
 }
 
@@ -138,9 +129,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #5969F1;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: #5969f1;
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   border-radius: 25px;
   transition: 0.3s;
 }
@@ -148,10 +140,11 @@ main {
 .navbar-nav .nav-item:hover {
   width: 70px;
   height: 70px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
-.navbar-nav .material-symbols-rounded {
+.navbar-nav .materialIcon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,21 +152,20 @@ main {
   color: white;
 }
 
-
 .findPostNavbarForm input {
   border-radius: 20px;
-  border: 3px solid #5969F1;
-  color: #5969F1;
+  border: 3px solid #5969f1;
+  color: #5969f1;
 }
 
 .findPostNavbarForm input::placeholder {
-  color: #5969F1;
+  color: #5969f1;
 }
 
 .findPostNavbarForm button {
   border-radius: 20px !important;
-  border: 3px solid #5969F1;
-  color: #5969F1;
+  border: 3px solid #5969f1;
+  color: #5969f1;
   font-weight: 600;
   display: flex;
   justify-content: center;
@@ -181,7 +173,7 @@ main {
 }
 
 .findPostNavbarForm button:hover {
-  background-color: #5969F1;
+  background-color: #5969f1;
   color: white;
 }
 
@@ -189,15 +181,20 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #5969F1;
-  background: linear-gradient(200deg, rgba(89, 105, 241, 1) 0%, rgba(156, 166, 255, 1) 100%);
+  background-color: #5969f1;
+  background: linear-gradient(
+    200deg,
+    rgba(89, 105, 241, 1) 0%,
+    rgba(156, 166, 255, 1) 100%
+  );
   padding: 20px;
   border-radius: 20px;
   transition: 0.3s;
 }
 
 .accountNav:hover {
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .accountNav a {
@@ -207,11 +204,6 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-}
-
-.accountNav a .material-symbols-rounded {
-  font-size: 50px;
 }
 
 @media (max-width: 600px) {
@@ -223,7 +215,7 @@ main {
     display: flex;
     width: 100%;
     position: fixed !important;
-    background-color: #5969F1 !important;
+    background-color: #5969f1 !important;
     padding: 10px;
   }
 
@@ -239,9 +231,9 @@ main {
 
   #logoFontWhenPhone {
     display: flex;
-    font-family: 'Bodoni Moda', serif;
+    font-family: "Bodoni Moda", serif;
     font-size: 30px;
-    color: #1D214E;
+    color: #1d214e;
     line-height: 5px;
   }
 
@@ -273,12 +265,11 @@ main {
 
 .formAuth button {
   width: 100%;
-  background-color: #5969F1;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  background-color: #5969f1;
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
   border: 0;
   border-radius: 50px !important;
 }
-
 
 /* ------- */
 /* NEW EDIT POST PAGE */
@@ -297,8 +288,8 @@ main {
 
 .btnNewCustom {
   width: 100%;
-  background-color: #5969F1;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  background-color: #5969f1;
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
   border: 0;
   border-radius: 20px !important;
 }
@@ -307,8 +298,6 @@ main {
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-
-
 
 /* ------- */
 /* INDEX PAGE */
@@ -324,7 +313,7 @@ main {
 }
 
 #searchedDivider div {
-  background-color: #9CA6FF;
+  background-color: #9ca6ff;
   color: white;
   width: 40%;
   height: 40px;
@@ -336,11 +325,11 @@ main {
 }
 
 #searchedDivider div:hover {
-  border: 4px solid #5969F1 !important;
+  border: 4px solid #5969f1 !important;
 }
 
 .toggledDivider {
-  border: 4px solid #5969F1 !important;
+  border: 4px solid #5969f1 !important;
 }
 
 #usersSection {
@@ -357,7 +346,7 @@ main {
 .findPostIndexPageForm input {
   border-radius: 20px;
   width: 100%;
-  background: linear-gradient(to right, #5969F1, #9CA6FF);
+  background: linear-gradient(to right, #5969f1, #9ca6ff);
   color: white;
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
@@ -373,9 +362,9 @@ main {
 
 .findPostIndexPageForm button {
   border-radius: 20px !important;
-  color: #5969F1;
-  border: 3px solid #5969F1;
-  background-color: #5969F1;
+  color: #5969f1;
+  border: 3px solid #5969f1;
+  background-color: #5969f1;
   color: white;
   font-weight: 600;
   display: flex;
@@ -385,8 +374,8 @@ main {
 
 .findPostIndexPageForm button:hover {
   background-color: white;
-  color: #5969F1;
-  border: 3px solid #5969F1;
+  color: #5969f1;
+  border: 3px solid #5969f1;
 }
 
 .cardIndex {
@@ -397,7 +386,6 @@ main {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-
 
 /* ------- */
 /* SHOW PAGE */
@@ -523,11 +511,11 @@ main {
 
 .cardFriends ul li a {
   text-decoration: none;
-  color: #5969F1;
+  color: #5969f1;
 }
 
 .card-header {
-  background-color: #5969F1;
+  background-color: #5969f1;
   border: 0;
   display: flex;
   align-items: center;
@@ -543,14 +531,12 @@ main {
   text-decoration: none;
   align-items: center;
   margin-left: 0.5em;
-
 }
 
 .card-footer {
   background-color: white;
   border: 0;
 }
-
 
 .cardIdentity {
   height: fit-content;
@@ -576,9 +562,8 @@ main {
 
 .cardIdentity ul li a {
   text-decoration: none;
-  color: #5969F1;
+  color: #5969f1;
 }
-
 
 /* ------- */
 /* CHAT PAGE */
@@ -597,9 +582,6 @@ main {
   overflow-y: scroll;
 }
 
-
-
-
 .postTitle {
   display: block;
   color: black;
@@ -617,9 +599,6 @@ main {
 .postHashtag {
   text-decoration: none;
 }
-
-
-
 
 .alert-dismissible {
   display: flex;
